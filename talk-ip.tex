@@ -45,8 +45,10 @@
    decorations.footprints,%
    decorations.markings,%
    shadows}
-\usepackage{animate}
+%\usepackage{animate}
 \usepackage{amssymb, amsmath, amsfonts, enumerate}
+\usepackage{eurosym}
+\usepackage{pifont}
 %\usepackage{bbold}
 \newcommand\hmmax{0}
 \usepackage{bm}
@@ -121,10 +123,13 @@
 \newcommand{\bebin}{\operatorname{Beta-binomial}}
 \newcommand{\norm}{\operatorname{N}}
 
-\def\then{{\structure{$\rule[0.35ex]{2ex}{0.5ex}\!\!\!\blacktriangleright$}}}
-\def\play{{\structure{$\blacktriangleright$}}}
-\def\gplus{{\structure{\rule[0.45ex]{1.4ex}{0.4ex}\hspace{-0.9ex}\rule[0.0ex]{0.4ex}{1.3ex}\hspace{0.5ex}}}}
-\def\gminus{{\structure{\rule[0.45ex]{1.4ex}{0.4ex}}}}
+\newcommand{\then}{\structure{$\rule[0.35ex]{2ex}{0.5ex}\!\!\!\blacktriangleright$}}
+\newcommand{\play}{\structure{$\blacktriangleright$}}
+%\newcommand{\gplus}{\structure{\rule[0.45ex]{1.4ex}{0.4ex}\hspace{-0.9ex}\rule[0.0ex]{0.4ex}{1.3ex}\hspace{0.5ex}}}
+\newcommand{\gplus}{\structure{\textbf{+}}}
+%\newcommand{\gmins}{\structure{\rule[0.45ex]{1.4ex}{0.4ex}}}
+\newcommand{\gmins}{\structure{\textbf{--}}}
+\newcommand{\gexcl}{\structure{\rule{0.3ex}{0ex}\textbf{!}\rule{0.3ex}{0ex}}}
 
 \input{nydefs.tex}
 \input{nycoldefs.tex}
@@ -156,8 +161,9 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 \author{Gero Walter}
 \institute{ Eindhoven University of Technology, Eindhoven, NL\\[2ex]
             \url{g.m.walter@tue.nl} \\[2ex]
-            \includegraphics[height=9mm]{logos/tuelogo} %\quad
+            \includegraphics[height=9mm]{logos/tuelogo} \\[2ex] %\quad
             %\includegraphics[height=9mm]{logos/dinalog-hp} }
+            Thanks to Matthias Troffaes for some slides.}
 \date{2016-12-07}
 
 \begin{document}
@@ -167,6 +173,130 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 }
 
 \addtocounter{framenumber}{-1} 
+
+\begin{frame}
+  \frametitle{Requirements for an Uncertainty Model}
+  \begin{block}{Operational}
+    How can uncertainty be reliably
+    \begin{itemize}
+    \item measured?
+    \item communicated?
+    \end{itemize}
+  \end{block}
+  \begin{block}{Inference}
+    How can we use our theory of uncertainty for
+    \begin{itemize}
+    \item statistical reasoning?
+    \item decision making?
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Uncertainty via Probability}
+  \begin{definition}
+    An \alert{event} is a statement that may, or may not,
+    hold \\
+    ---typically, something that may happen in the future.
+    \\[1ex]
+    Notation: $A$, $B$, $C$, \dots
+  \end{definition}
+  \begin{exampleblock}{Examples}
+    \begin{itemize}
+    \item tomorrow, it will rain
+    \item in the next year, at most 3 components will fail
+    \end{itemize}
+  \end{exampleblock}
+  \begin{alertblock}{}
+    how to express our uncertainty regarding events?
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Probability: Definition}
+  \begin{definition}
+    The \alert{probability of an event} is a number between $0$ and $1$.
+    \\[1ex]
+    Notation: $P(A)$, $P(B)$, $P(C)$, \dots
+  \end{definition}
+  \begin{exampleblock}{Examples}
+    \begin{itemize}
+    \item for $A$ = `tomorrow, it will rain' \\
+      my probability $P(A)$ is $0.2$
+    \item for $B$ = `in the next year, at most 3 components will fail' \\
+      my probability $P(B)$ is $0.0173$
+    \end{itemize}
+  \end{exampleblock}
+  \begin{alertblock}{}
+    what does this number actually mean? \\
+    how would you measure it?
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Probability: Interpretation}
+  \begin{block}{Interpretation: Trivial Cases}
+    $P(A)=0$ $\iff$ $A$ is practically impossible {\hfill \scriptsize logically?}\\
+    $P(A)=1$ $\iff$ $A$ is practically certain
+  \end{block}
+  \begin{alertblock}{}
+    what about values between $0$ and $1$, such as $P(A)=0.2$?
+  \end{alertblock}
+  \begin{block}{Interpretation: General Case}
+    \begin{itemize}
+    \item it's (like) a \alert{frequency}
+    \item it's a degree of belief (\play\ \alert{betting rate})
+    \item it's something else
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Probability: Frequency Interpretation}
+  $P(A)=0.2$ means:
+  \begin{itemize}
+  \item in 1 out of 5 times, it rains tomorrow \\
+    \textbf{??? (tomorrow is not repeatable!)}
+  \item on a `day like this', in 1 out of 5 times, it rains the next day
+  \end{itemize}
+  \begin{block}{Frequency Interpretation}
+    \begin{itemize}
+    \item[\gplus] easy to understand
+    \item[\gmins] needs \alert{reference class}, only for \alert{repeatable events}
+    \item[\gmins] needs plenty of data
+    \item[\gexcl] aleatory
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Probability: Betting Interpretation}
+  $P(A)=0.2$ means:
+  \begin{itemize}
+  \item I would \textit{now} pay at most \euro 0.2 \\
+    if \textit{tomorrow} I am paid \euro 1 in case it rains
+  \item I would \textit{tomorrow} pay \euro 1 in case it rains \\
+    if I am \textit{now} paid at least \euro 0.2
+  \end{itemize}
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (-4,0) -- (4,0);
+      \draw[very thick,green] (-4,0) -- (0,0);
+      \draw[very thick,blue] (0,0) -- (4,0);
+      \draw ( 0,0.05) -- ( 0,-0.05) node[anchor=south] {$P(A)$};
+      \draw[dashed] ( 0,0) -- (0,-0.5);
+      \draw (-2,0.05) -- (-2,-0.05) node[anchor=south] {$p$} node[anchor=north east,xshift=1cm] {buy $A$ for price $p$};
+      \draw ( 2,0.05) -- ( 2,-0.05) node[anchor=south] {$q$} node[anchor=north west,xshift=-1cm] {sell $A$ for price $q$};
+    \end{tikzpicture}
+  \end{center}
+  \begin{block}{Betting Interpretation}
+    \begin{itemize}
+    \item[\gplus] no reference class, works also for \alert{one-shot events}
+    \item[\gmins] needs plenty of elicitation or plenty of data
+    \item[\gexcl] epistemic
+    \end{itemize}
+  \end{block}
+\end{frame}
 
 
 \end{document}
