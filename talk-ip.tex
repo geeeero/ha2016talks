@@ -89,6 +89,12 @@
 
 \newcommand{\dd}{\,\mathrm{d}}
 
+\newcommand{\pr}{P}
+\newcommand{\lpr}{\underline{P}}
+\newcommand{\upr}{\overline{P}}
+\newcommand{\lnex}{\underline{E}}
+\newcommand{\unex}{\overline{E}}
+
 \newcommand{\mbf}[1]{\mathbf{#1}}
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 \renewcommand{\vec}[1]{{\bm#1}}
@@ -314,8 +320,8 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 
 \begin{frame}
   \frametitle{Bounding Methods} %\normalsize Dealing With Severe Uncertainty: 
-  \begin{columns}
-  \begin{column}{0.8\textwidth}
+%  \begin{columns}
+%  \begin{column}{\textwidth}
   \begin{block}{Confidence intervals} %[]
     \begin{itemize}
   \setlength{\itemsep}{0pt}
@@ -337,6 +343,10 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
       \item[\gplus] no prosecutor's fallacy
       \end{itemize}
   \end{block}
+%  \end{column}
+%  \end{columns}
+  \begin{columns}
+  \begin{column}{0.8\textwidth}
   \begin{block}{Interval probability (bounding probabilities directly)}
     \begin{itemize}
   \setlength{\itemsep}{0pt}
@@ -354,5 +364,182 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
   \end{columns}
 %  {\scriptsize other: info-gap \cite{2001:benhaim}, \dots}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Lower and Upper Probability: Definition}
+  \begin{definition}
+    The \alert{lower and upper probability of an event}\\ are numbers between $0$ and $1$.
+    \\[1ex]
+    Notation: $\lpr(A)$, $\upr(A)$, \dots
+  \end{definition}
+  \begin{exampleblock}{Examples}
+    \begin{itemize}
+    \item for $A$ = `tomorrow, it will rain' \\
+      my lower probability $\lpr(A)$ is $0.1$ \\
+      my upper probability $\upr(A)$ is $0.4$
+    \end{itemize}
+  \end{exampleblock}
+  \begin{alertblock}{}
+    what do these numbers actually mean? \\
+    how would you measure it?
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{$\lpr(\cdot)$ and $\upr(\cdot)$: Betting Interpretation}
+  $\lpr(A)=0.1$ and $\upr(A)=0.4$ means:
+  \begin{itemize}
+  \item I would \textit{now} pay at most \euro 0.1 \\
+    if \textit{tomorrow} I am paid \euro 1 in case it rains
+  \item I would \textit{tomorrow} pay \euro 1 in case it rains \\
+    if I am \textit{now} paid at least \euro 0.4
+  \end{itemize}
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (-4,0) -- (4,0);
+      \draw[line width=1mm,tuegreen] (-4,0) -- (-1,0);
+      \draw[line width=1mm,tueblue] (1,0) -- (4,0);
+      \draw[line width=1mm,tueorange] (-1,0) -- (1,0);
+      \draw (-1,-0.1) -- (-1,0.1) node[above] {$\lpr(A)$};
+      \draw[dashed] (-1,0) -- (-1,-0.5);
+      \draw ( 1,-0.1) -- ( 1,0.1) node[above] {$\upr(A)$};
+      \draw[dashed] ( 1,0) -- ( 1,-0.5);
+      \draw (0,-0.1) node[below] {\small \textcolor{tueorange}{undecisive}};
+      \draw (-2,0.1) node[above] {$p$} -- (-2,-0.1) node[anchor=north east,xshift= 0.8cm] {\small buy $A$ for price $p$};
+      \draw ( 2,0.1) node[above] {$q$} -- ( 2,-0.1) node[anchor=north west,xshift=-0.8cm] {\small sell $A$ for price $q$};
+    \end{tikzpicture}
+  \end{center}
+  \begin{block}{Betting Interpretation}
+    \begin{itemize}
+    \item[\gplus] no reference class, works also for \alert{one-shot events}
+    \item[\gplus] works with partial elicitation and / or sparse data
+    \item[\gexcl] epistemic
+    \end{itemize}
+  \end{block}
+  {\scriptsize \qquad frequency interpretation?}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Events: Formal Definition}
+  \begin{definition}
+    The \alert{possibility space} $\Omega$ is \\
+    the set of all possible outcomes of the problem at hand.
+  \end{definition}
+  \begin{exampleblock}{Example}
+    interested in reliability of a system with $5$ components \\
+    e.g. number of components that fail in the next year \\
+    $\Omega=\{0,1,2,3,4,5\}$
+  \end{exampleblock}
+  \begin{definition}
+    An \alert{event} is a subset of $\Omega$.
+    %\\[1ex]
+    \hspace{2em}
+    Notation: $A$, $B$, $C$, \dots
+  \end{definition}
+  \begin{exampleblock}{Example}
+    in the next year, at most 3 components will fail
+    \\
+    would be represented by the event $A=\{0,1,2,3\}$
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Lower and Upper Probabilities: Formal Definition}
+  \begin{definition}
+    A \alert{lower probability} $\lpr$
+    \\
+    maps
+    \textit{every}
+    event $A\subseteq\Omega$ to a real number $\lpr(A)$.
+    \\[1ex]
+    The \alert{upper probability} $\upr$ is simply defined as \\
+    $\upr(A)=1-\lpr(A^c)$, for all $A\subseteq\Omega$
+  \end{definition}
+  \begin{itemize}
+  \item $A^c$ = \alert{complement} (or \alert{negation}) of $A$ = all elements {\it not} in $A$
+  \begin{exampleblock}{Example}
+    complement of `at most 3 components will fail' ($A=\{0,1,2,3\}$)
+    \\ is `at least 4 components will fail' ($A^c=\{4,5\}$)
+  \end{exampleblock}
+  \item the identity $\upr(A)=1-\lpr(A^c)$ is implied
+    by the betting interpretation \\
+    {\scriptsize \hfill see exercises}
+  \item \textit{every} event $\leftrightarrow$ sparse data? \\
+    we can always set $\lpr(A)=0$ and $\lpr(A^c)=0$ ($\iff\upr(A)=1$)!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Lower and Upper Probabilities: Credal Set}
+  \begin{definition}
+    A \alert{probability measure} $\pr$
+    \\
+    maps
+    \textit{every}
+    event $A\subseteq\Omega$ to a number $\pr(A)$
+    in $[0,1]$
+    \\
+    and satisfies
+    \begin{itemize}
+    \item $\pr(\emptyset)=0$,
+    \item $\pr(\Omega)=1$, and
+    \item $\pr(A)=\sum_{\omega\in A}\pr(\{\omega\})$.
+    \end{itemize}
+  \end{definition}
+  \begin{definition}
+    The \alert{credal set} $\mathcal{M}$
+    of $\lpr$
+    \\ is the set of all probability measures $\pr$ for which
+    \\ 
+    $\lpr(A)\le\pr(A)\le\upr(A)$ for all $A\subseteq\Omega$.
+  \end{definition}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Lower and Upper Probabilities: \\
+    Avoiding Sure Loss, Natural Extension, and Coherence}
+  \begin{definition}
+    We say that $\lpr$ \alert{avoid sure loss} if its credal set $\mathcal{M}$ is non-empty.
+  \end{definition}
+  \begin{definition}
+    If $\lpr$ avoids sure loss, its \alert{natural extension} $\lnex$ is defined, for all $A\subseteq\Omega$, as:
+    \begin{align*}
+      \lnex(A)=\min_{\pr\in\mathcal{M}}\pr(A)
+      &&
+      \left(\text{or equivalently, }\unex(A)=\max_{\pr\in\mathcal{M}}\pr(A)\right)
+    \end{align*}
+  \end{definition}
+  \begin{definition}
+    We say that $\lpr$ is \alert{coherent} if it avoids sure loss, and, for all $A\subseteq\Omega$:
+    \begin{align*}
+      \lpr(A)=\lnex(A)
+      &&
+      \Big(\text{or equivalently, }\upr(A)=\unex(A)\Big)
+    \end{align*}
+  \end{definition}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Lower and Upper Probabilities: Sensitivity Interpretation}
+  \begin{block}{Sensitivity Interpretation of $\lpr$}
+    One of the probability measures $\pr$ in the credal set $\mathcal{M}$ is
+    the correct one,
+    \\
+    \textit{but we do not know which}.
+  \end{block}
+  \begin{itemize}
+  \item $\lpr$ is coherent precisely when it is
+    \\ \alert{uniquely determined} by $\mathcal{M}$
+  \item if $\lpr$ is not coherent, but avoids sure loss
+    \\
+    then its natural extension $\lnex$ \alert{corrects} $\lpr$
+  \end{itemize}
+  \begin{center}
+    \textbf{crucial: no distribution over $\mathcal{M}$ assumed!} \\
+    (why not?)
+  \end{center}
+\end{frame}
+
+
 
 \end{document}
