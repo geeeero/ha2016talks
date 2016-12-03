@@ -56,6 +56,7 @@
 \usepackage{pxfonts}
 \usepackage{xcolor}
 \usepackage{url}
+\usepackage{xargs}
 
 %\usepackage[backend=bibtex,style=authoryear,dashed=false]{biblatex}
 %\addbibresource{../bib/lundrefs.bib}
@@ -94,6 +95,60 @@
 \newcommand{\upr}{\overline{P}}
 \newcommand{\lnex}{\underline{E}}
 \newcommand{\unex}{\overline{E}}
+
+\newcommand{\middlemid}{\;\middle\vert\;} % stretchable \mid
+\newcommand{\prsymbol}{\operatorname{P}}
+\newcommand{\lprsymbol}{\operatorname{\underline{P}}}
+\newcommand{\uprsymbol}{\operatorname{\overline{P}}}
+\newcommand{\expecsymbol}{\operatorname{E}}
+\newcommand{\lexpecsymbol}{\operatorname{\underline{E}}}
+\newcommand{\uexpecsymbol}{\operatorname{\overline{E}}}
+\newcommand{\mediansymbol}{\operatorname{Median}}
+\newcommand{\varsymbol}{\operatorname{Var}}
+\newcommand{\sdsymbol}{\operatorname{SD}}
+\newcommand{\covsymbol}{\operatorname{Cov}}
+\newcommand{\pmfsymbol}{p}
+\newcommand{\pdfsymbol}{f}
+\newcommand{\cdfsymbol}{\operatorname{F}}
+\newcommand{\risksymbol}{\rho}
+\newcommand{\helper}[3]{
+  \ifthenelse{\equal{#3}{}}{%
+    {#1}_{#2}}{%
+    {#1}_{#2}\left({#3}\right)}{%
+  }
+}
+%\newcommand{\pr}[2][]{\helper{\prsymbol}{#1}{#2}}
+%\newcommand{\lpr}[2][]{\helper{\lprsymbol}{#1}{#2}}
+%\newcommand{\upr}[2][]{\helper{\uprsymbol}{#1}{#2}}
+\newcommand{\expec}[2][]{\helper{\expecsymbol}{#1}{#2}}
+\newcommand{\median}[2][]{\helper{\mediansymbol}{#1}{#2}}
+\newcommand{\var}[2][]{\helper{\varsymbol}{#1}{#2}}
+%\newcommand{\sd}[2][]{\helper{\sdsymbol}{#1}{#2}}
+\newcommand{\cov}[2][]{\helper{\covsymbol}{#1}{#2}}
+\newcommand{\risk}[2][]{\helper{\risksymbol}{#1}{#2}}
+\newcommand{\pmf}[2][]{\helper{\pmfsymbol}{#1}{#2}}
+\newcommand{\pdf}[2][]{\helper{\pdfsymbol}{#1}{#2}}
+\newcommand{\cdf}[2][]{\helper{\cdfsymbol}{#1}{#2}}
+\newcommand{\chelper}[5]{
+  \ifthenelse{\equal{#3}{}}{%
+    {#1}_{#2}\left(#4 \middlemid #5 \right)}{%
+    {#1}_{#2\mid #3}\left(#4 \middlemid #5 \right)}{%
+  }
+}
+\newcommand{\cpr}[2]{\chelper{\prsymbol}{}{}{#1}{#2}}
+\newcommand{\clpr}[2]{\chelper{\lprsymbol}{}{}{#1}{#2}}
+\newcommand{\cupr}[2]{\chelper{\uprsymbol}{}{}{#1}{#2}}
+\newcommand{\cexpec}[2]{\chelper{\expecsymbol}{}{}{#1}{#2}}
+\newcommand{\clexpec}[2]{\chelper{\lexpecsymbol}{}{}{#1}{#2}}
+\newcommand{\cuexpec}[2]{\chelper{\uexpecsymbol}{}{}{#1}{#2}}
+\newcommand{\cmedian}[2]{\chelper{\mediansymbol}{}{}{#1}{#2}}
+\newcommand{\cvar}[2]{\chelper{\varsymbol}{}{}{#1}{#2}}
+\newcommand{\ccov}[2]{\chelper{\covsymbol}{}{}{#1}{#2}}
+\newcommand{\csd}[2]{\chelper{\sdsymbol}{}{}{#1}{#2}}
+\newcommand{\crisk}[2]{\chelper{\risksymbol}{}{}{#1}{#2}}
+\newcommandx{\cpmf}[4][1=,2=]{\chelper{\pmfsymbol}{#1}{#2}{#3}{#4}}
+\newcommandx{\cpdf}[4][1=,2=]{\chelper{\pdfsymbol}{#1}{#2}{#3}{#4}}
+\newcommandx{\ccdf}[4][1=,2=]{\chelper{\cdfsymbol}{#1}{#2}{#3}{#4}}
 
 \newcommand{\mbf}[1]{\mathbf{#1}}
 \newcommand{\bs}[1]{\boldsymbol{#1}}
@@ -169,8 +224,8 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
             \url{g.m.walter@tue.nl} \\[2ex]
             \includegraphics[height=9mm]{logos/tuelogo} \\[2ex] %\quad
             %\includegraphics[height=9mm]{logos/dinalog-hp} }
-            Thanks to Matthias Troffaes for some slides.}
-\date{2016-12-07}
+            Thanks to Matthias Troffaes for introductory slides.}
+\date{Hannover 2016-12-07}
 
 \begin{document}
 
@@ -234,8 +289,8 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \end{itemize}
   \end{exampleblock}
   \begin{alertblock}{}
-    what does this number actually mean? \\
-    how would you measure it?
+    what do these numbers actually mean? \\
+    how would you measure them?
   \end{alertblock}
 \end{frame}
 
@@ -269,7 +324,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \begin{itemize}
     \item[\gplus] intuitive, easy to understand
     \item[\gmins] needs \alert{reference class}, only for \alert{repeatable events}
-    \item[\gmins] needs plenty of data
+    \item[\gmins] needs plenty of data, or strong symmetry assumptions
     \item[\gexcl] aleatory
     \end{itemize}
   \end{block}
@@ -295,7 +350,8 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
       \draw ( 2,0.1) node[above] {$q$} -- ( 2,-0.1) node[anchor=north west,xshift=-1cm] {sell $A$ for price $q$};
     \end{tikzpicture}
   \end{center}
-  \begin{block}{Betting Interpretation}
+  \vspace*{-1.5ex}
+  \begin{block}{Betting (Degree of Belief) Interpretation}
     \begin{itemize}
     \item[\gplus] no reference class, works also for \alert{one-shot events}
     \item[\gmins] needs plenty of elicitation or plenty of data
@@ -322,7 +378,8 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
   \frametitle{Bounding Methods} %\normalsize Dealing With Severe Uncertainty: 
 %  \begin{columns}
 %  \begin{column}{\textwidth}
-  \begin{block}{Confidence intervals} %[]
+%  \begin{block}{Confidence intervals} %[]
+\structure{Confidence intervals (Frequentist Statistics)}
     \begin{itemize}
   \setlength{\itemsep}{0pt}
   \setlength{\parskip}{0pt}
@@ -331,8 +388,10 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \item[\gmins] p-value fallacy (aka prosecutor's fallacy)
     \item[\gplus] no prior needed, only likelihood
     \end{itemize}
-  \end{block}
-  \begin{block}{Credible intervals}
+%  \end{block}
+  \vspace*{1ex}
+%  \begin{block}{Credible intervals}
+\structure{Credible intervals (Bayesian Statistics)}
       \begin{itemize}
   \setlength{\itemsep}{0pt}
   \setlength{\parskip}{0pt}
@@ -340,14 +399,16 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
       \item[\gmins] choice of credible level $\alpha$?
       \item[\gmins] choice of prior?
       \item[\gmins] dealing with prior ignorance and prior-data conflict?
-      \item[\gplus] no prosecutor's fallacy
+      \item[\gplus] no p-value fallacy
       \end{itemize}
-  \end{block}
+%  \end{block}
 %  \end{column}
 %  \end{columns}
-  \begin{columns}
-  \begin{column}{0.8\textwidth}
-  \begin{block}{Interval probability (bounding probabilities directly)}
+%  \begin{columns}
+%  \begin{column}{0.8\textwidth}
+  \vspace*{1ex}
+%  \begin{block}{Interval probability (bounding probabilities directly)}
+\structure{Interval probability (bounding probabilities directly)}
     \begin{itemize}
   \setlength{\itemsep}{0pt}
   \setlength{\parskip}{0pt}
@@ -355,13 +416,13 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \item[\gmins] choice of prior bounds?
     \item[\gplus] no confidence / credible level issues
     \item[\gplus] no prior ignorance issues
-    \item[\gplus] p-value fallacy (prosecutor's) fallacy
+    \item[\gplus] no p-value fallacy
     \end{itemize}
-  \end{block}
-  \end{column}
-  \begin{column}{0.2\textwidth}
-  \end{column}
-  \end{columns}
+%  \end{block}
+%  \end{column}
+%  \begin{column}{0.2\textwidth}
+%  \end{column}
+%  \end{columns}
 %  {\scriptsize other: info-gap \cite{2001:benhaim}, \dots}
 \end{frame}
 
@@ -381,12 +442,12 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
   \end{exampleblock}
   \begin{alertblock}{}
     what do these numbers actually mean? \\
-    how would you measure it?
+    how would you measure them?
   \end{alertblock}
 \end{frame}
 
 \begin{frame}
-  \frametitle{$\lpr(\cdot)$ and $\upr(\cdot)$: Betting Interpretation}
+  \frametitle{$\lpr$ and $\upr$: Betting Interpretation}
   $\lpr(A)=0.1$ and $\upr(A)=0.4$ means:
   \begin{itemize}
   \item I would \textit{now} pay at most \euro 0.1 \\
@@ -394,6 +455,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
   \item I would \textit{tomorrow} pay \euro 1 in case it rains \\
     if I am \textit{now} paid at least \euro 0.4
   \end{itemize}
+  \vspace*{-3ex}
   \begin{center}
     \begin{tikzpicture}
       \draw (-4,0) -- (4,0);
@@ -409,6 +471,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
       \draw ( 2,0.1) node[above] {$q$} -- ( 2,-0.1) node[anchor=north west,xshift=-0.8cm] {\small sell $A$ for price $q$};
     \end{tikzpicture}
   \end{center}
+\vspace*{-1ex}
   \begin{block}{Betting Interpretation}
     \begin{itemize}
     \item[\gplus] no reference class, works also for \alert{one-shot events}
@@ -416,7 +479,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \item[\gexcl] epistemic
     \end{itemize}
   \end{block}
-  {\scriptsize \qquad frequency interpretation?}
+%  {\scriptsize \qquad frequency interpretation?}
 \end{frame}
 
 \begin{frame}
@@ -425,6 +488,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     The \alert{possibility space} $\Omega$ is \\
     the set of all possible outcomes of the problem at hand.
   \end{definition}
+  \vspace*{-1ex}
   \begin{exampleblock}{Example}
     interested in reliability of a system with $5$ components \\
     e.g. number of components that fail in the next year \\
@@ -435,7 +499,8 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     %\\[1ex]
     \hspace{2em}
     Notation: $A$, $B$, $C$, \dots
-  \end{definition}
+  \end{definition} 
+  \vspace*{-1ex}
   \begin{exampleblock}{Example}
     in the next year, at most 3 components will fail
     \\
@@ -444,7 +509,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 \end{frame}
 
 \begin{frame}
-  \frametitle{Lower and Upper Probabilities: Formal Definition}
+  \frametitle{$\lpr$ and $\upr$: Formal Definition}
   \begin{definition}
     A \alert{lower probability} $\lpr$
     \\
@@ -461,16 +526,16 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     complement of `at most 3 components will fail' ($A=\{0,1,2,3\}$)
     \\ is `at least 4 components will fail' ($A^c=\{4,5\}$)
   \end{exampleblock}
-  \item the identity $\upr(A)=1-\lpr(A^c)$ is implied
-    by the betting interpretation \\
-    {\scriptsize \hfill see exercises}
-  \item \textit{every} event $\leftrightarrow$ sparse data? \\
-    we can always set $\lpr(A)=0$ and $\lpr(A^c)=0$ ($\iff\upr(A)=1$)!
+  \item {\small the identity $\upr(A)=1-\lpr(A^c)$ is implied
+    by the betting interpretation }%\\
+%    {\scriptsize \hfill see exercises}
+  \item {\small \textit{every} event $\leftrightarrow$ sparse data? \\
+    we can always set $\lpr(A)=0$ and $\lpr(A^c)=0$ ($\iff\upr(A)=1$)!}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Lower and Upper Probabilities: Credal Set}
+  \frametitle{$\lpr$ and $\upr$: Credal Sets}
   \begin{definition}
     A \alert{probability measure} $\pr$
     \\
@@ -478,13 +543,24 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \textit{every}
     event $A\subseteq\Omega$ to a number $\pr(A)$
     in $[0,1]$
-    \\
     and satisfies
+\begin{columns}
+\begin{column}{0.2\textwidth}
     \begin{itemize}
     \item $\pr(\emptyset)=0$,
+    \end{itemize}
+\end{column}
+\begin{column}{0.3\textwidth}
+    \begin{itemize}
     \item $\pr(\Omega)=1$, and
+    \end{itemize}
+\end{column}
+\begin{column}{0.45\textwidth}
+    \begin{itemize}
     \item $\pr(A)=\sum_{\omega\in A}\pr(\{\omega\})$.
     \end{itemize}
+\end{column}
+\end{columns}
   \end{definition}
   \begin{definition}
     The \alert{credal set} $\mathcal{M}$
@@ -493,11 +569,22 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \\ 
     $\lpr(A)\le\pr(A)\le\upr(A)$ for all $A\subseteq\Omega$.
   \end{definition}
+  \begin{block}{Sensitivity Interpretation of $\lpr$}
+    One of the probability measures $\pr$ in the credal set $\mathcal{M}$\\
+    is the correct one,
+    \textit{but we do not know which}.
+  \end{block}
+%  \begin{center}
+    \textbf{crucial: no distribution over $\mathcal{M}$ assumed!} %\\
+%    (why not?)
+%  \end{center}
 \end{frame}
 
+\iffalse
 \begin{frame}
-  \frametitle{Lower and Upper Probabilities: \\
-    Avoiding Sure Loss, Natural Extension, and Coherence}
+  \frametitle{$\lpr(\cdot)$ and $\upr(\cdot)$:
+%    Avoiding Sure Loss, Natural Extension, and Coherence}
+     Properties***}
   \begin{definition}
     We say that $\lpr$ \alert{avoid sure loss} if its credal set $\mathcal{M}$ is non-empty.
   \end{definition}
@@ -520,26 +607,253 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 \end{frame}
 
 \begin{frame}
-  \frametitle{Lower and Upper Probabilities: Sensitivity Interpretation}
+  \frametitle{$\lpr(\cdot)$ and $\upr(\cdot)$: Sensitivity Interpretation}
   \begin{block}{Sensitivity Interpretation of $\lpr$}
     One of the probability measures $\pr$ in the credal set $\mathcal{M}$ is
     the correct one,
-    \\
     \textit{but we do not know which}.
   \end{block}
-  \begin{itemize}
-  \item $\lpr$ is coherent precisely when it is
-    \\ \alert{uniquely determined} by $\mathcal{M}$
-  \item if $\lpr$ is not coherent, but avoids sure loss
-    \\
-    then its natural extension $\lnex$ \alert{corrects} $\lpr$
-  \end{itemize}
+%  \begin{itemize}
+%  \item $\lpr$ is coherent precisely when it is
+%    \\ \alert{uniquely determined} by $\mathcal{M}$
+%  \item if $\lpr$ is not coherent, but avoids sure loss
+%    \\
+%    then its natural extension $\lnex$ \alert{corrects} $\lpr$
+%  \end{itemize}
   \begin{center}
-    \textbf{crucial: no distribution over $\mathcal{M}$ assumed!} \\
-    (why not?)
+    \textbf{crucial: no distribution over $\mathcal{M}$ assumed!} %\\
+%    (why not?)
   \end{center}
+\end{frame}
+\fi
+
+\begin{frame}{Bayesian Inference}
+\vspace*{-2ex}
+\begin{align*}
+\begin{array}{ccccl}
+\uncover<1->{\text{expert info}        & + & \text{data}                & \to & \text{complete picture} \\[1.5ex]}
+\uncover<2->{\text{prior distribution} & + & \text{sample distribution} & \to & \text{posterior distribution} \\[1.5ex]
+ f(p) & \times & f(s \mid p) & \propto & f(p \mid s) \\
+ & & & & \qquad\text{\bluealert{\play\ Bayes' Rule}} \\}
+%\uncover<3->{\downarrow & & \downarrow & & \hspace*{3ex} \downarrow \\
+\uncover<4->{\text{Beta prior}}   & & \uncover<3->{\text{Binomial}}         & & \uncover<5->{\text{Beta posterior}} \\
+\uncover<4->{}                    & & \uncover<3->{\text{distribution}}     & & \uncover<5->{\qquad \text{\bluealert{\play\ conjugacy}}}\\[1ex]
+\uncover<4->{p \sim \be(\az,\bz)} & & \uncover<3->{s \mid p \sim \bin(n,p)} & & \uncover<5->{p \mid s \sim \be(\an,\bn)}
+\end{array}
+\end{align*}
+\vspace*{-3ex}
+\begin{tikzpicture}
+\uncover<3-5>{%
+\node at (-0.5,0) {\includegraphics[width=0.25\textwidth]{figs/smallfig-binom}};}
+\uncover<4-5>{%
+\node at (-4.5,0) {\includegraphics[width=0.25\textwidth]{figs/smallfig-prior}};}
+\uncover<5>{%
+\node at ( 3.5,0) {\includegraphics[width=0.25\textwidth]{figs/smallfig-posterior}};}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Bayesian Inference with Sets of Priors}
+Bayesian inference with sets of priors (credal sets):\\ \emph{robust Bayesian inference}
+\begin{itemize}
+\item prior ignorance / weakly informative priors
+\item prior-data conflict
+\end{itemize}
+***make noninformative prior thing short
+\end{frame}
+
+\begin{frame}{`Non-informative' Priors}
+  How to construct a prior if we do not have a lot of information?
+  \begin{alertblock}{Laplace: Principle of Indifference}
+    Use the uniform distribution.
+  \end{alertblock}
+  Obvious issue: this depends on the parametrisation!
+%  \pause
+  \begin{exampleblock}{Example}
+    An object of 1kg has uncertain volume $V$ between $1\ell$ and $2\ell$.
+    \begin{itemize}
+    \item Uniform distribution over volume $V$ $\implies$ $E(V)=1.5\ell$.
+    \item Uniform distribution over density $\rho=1/V$ $\implies$ \\
+      $E(V)=E(1/\rho)=\int_{0.5}^1 2/\rho d\rho=2(\ln 1-\ln 0.5)=1.39\ell$
+    \end{itemize}
+  \end{exampleblock}
+%  \pause
+  \alert{The uniform distribution does not really model prior ignorance.}
+  (Jeffreys prior is transformation-invariant, but depends on the sample space and can break decision making!)
+\end{frame}
+
+\begin{frame}{Prior Ignorance via Sets of Probabilities}
+   How to construct prior if we do not have a lot of information?
+  \begin{alertblock}{Boole: Probability Bounding}
+    Use the set of all probability distributions (\alert{vacuous model}).
+  \end{alertblock}
+  Results no longer depend on parametrisation!
+%  \pause
+  \begin{exampleblock}{Example}
+    An object of 1kg has uncertain volume $V$ between $1\ell$ and $2\ell$.
+    \begin{itemize}
+    \item Set of all distributions over volume $V$ $\implies$ $E(V)\in[1,2]$.
+    \item Set of all distribution over density $\rho=1/V$ $\implies$ \\
+      $E(V)=E(1/\rho)\in[1,2]$
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Prior Ignorance via Sets of Probabilities}
+  \begin{theorem}
+    The set of posterior distributions
+    resulting from a vacuous set of prior distributions
+    is again vacuous,
+    regardless of the likelihood.
+  \end{theorem}
+  \alert{We can never learn anything when starting from a vacuous set of priors.}
+  \pause
+  \begin{alertblock}{Solution: Near-Vacuous Sets of Priors}
+    Only insist that the prior predictive, or other classes of inferences, are vacuous.
+  \end{alertblock}
+  This can be done using sets of conjugate priors ***%\cite{2012:benavolizaffalon,2015:benavolizaffalon}.
 \end{frame}
 
 
+\begin{frame}{Example: Imprecise Beta Model (IBM)}
+***use other BBM intro slides?
+\begin{itemize}
+\item<1-> binomial likelihood (observing $x$ successes in $n$ trials)
+\begin{align*}
+\cpdf{x}{\theta} &= {n \choose x} \, \theta^x (1-\theta)^{n-x}
+\end{align*}
+\item<1-> conjugate Beta prior
+      \begin{itemize} 
+      \item with mean $\yzr$
+        = prior expected probability of success
+      \item and prior strength parameter $\nzg>0$
+      \end{itemize}
+\begin{align*}
+\pdf{\theta} &\propto \theta^{\nzg\yzr-1}\, (1-\theta)^{\nzg(1-\yzr)-1}
+\end{align*}
+\item<2-> ***informative set of priors: Use the set $\MZ$ of Beta priors with $\yzr \in [\yzlr, \yzur]$ and
+      \begin{itemize} 
+      \item $\nzg > 0$ fixed, or
+      \item $\nzg \in [\nzlg, \nzug]$
+      \end{itemize}
+\item<3-> $\cexpec{\theta}{x} = \ynr$ is a weighted average of $\expec{\theta} = \yzr$ and $\dfrac{x}{n}$!
+\item<4-> $\cvar{\theta}{x} = \dfrac{\ynr (1-\ynr)}{\nng + 1}$ decreases with $n$!
+\end{itemize}
+%($\theta_1 \to \theta$, $\theta_2 \to 1-\theta$, $t_1 \to \yzr$, $t_2 = 1 - t_1$, $n_1 = x$, $n_2 = n-x$, $s \to \nzg$)
+\end{frame}
+
+\begin{frame}{}
+***do the whole param update thing, also near-noninf, like lund (?)
+\end{frame}
+
+
+
+\begin{frame}{%General Framework for 
+Canonical Exponential Families}
+  Conjugate priors like the Beta can be constructed
+  for sample distributions (likelihood) from:
+  \begin{definition}[Canonical exponential family]
+  \begin{equation*}
+    f(x \mid \psi)=h(x)\exp\big\{\psib^T\tau(x) - \bpsib) \big\}
+  \end{equation*}
+  \begin{itemize}
+  \item includes multinomial, normal, Poisson, exponential, \dots
+  \item $\psi$ generally a transformation of original parameter $\theta$
+  \end{itemize}
+  \pause
+  \end{definition}
+  \begin{definition}[Family of conjugate priors]
+  A family of priors for i.i.d.\ sampling from the can.\ exp.\ family:
+  \begin{equation*}
+    f(\psib\mid\nzg,\yzr)
+    \propto \exp\big\{ \nzg \big[\psib^T \yzr - \bpsib\big]\big\}
+  \end{equation*}
+  with hyper-parameters $\nzg$ and $\yzr$.
+  \end{definition}
+\end{frame}
+
+\begin{frame}{%General Framework for 
+Canonical Exponential Families}
+  \begin{theorem}[Conjugacy]
+    Posterior is of the same form as the prior:
+    \begin{equation*}
+      f(\psib\mid\nzg,\yzr,\vec{x})
+      \propto \exp\big\{ \nng \big[\psib^T \ynr - \bpsib\big]\big\} %}
+    \end{equation*}
+    where
+    \begin{align*}
+      \vec{x} &= (x_1,\dots,x_n) &
+      \tau(\vec{x}) &= \sum_{i=1}^n \tau(x_i) \\
+      \nng &= \nzg + n &
+      \ynr &= \frac{\nzg}{\nzg + n} \cdot \yzr + \frac{n}{\nzg + n} \cdot \frac{\tau(\vec{x})}{n}
+    \end{align*}
+  \end{theorem}
+\begin{itemize}
+\item $\yzr$ = \alert{prior expectation} of $\tau(\vec{x})/n$
+\item $\nzg$ determines \alert{spread} and \alert{learning speed}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{%General Framework for 
+IP with Canonical Exponential Families}
+%\pause
+\begin{itemize}
+\item usefulness of this framework for IP / robust Bayes\\ discovered by Quaghebeur \& de Cooman ***%\cite{2005:quaeghe::expon}
+\item near-noninformative sets of priors\\ developed by Benavoli \& Zaffalon ***%\cite{2012:benavolizaffalon,2015:benavolizaffalon}
+\item for informative sets of priors, Walter \& Augustin ***%\cite{2013:diss-gw,2009:walter}
+  suggest to use parameter sets $\PZ = [\nzlg,\nzug] \times [\yzlr, \yzur]$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Robust Bayesian Analysis: Other Models}
+\begin{itemize}
+\item How to define sets of priors $\MZ$ is a crucial modeling choice
+\item Sets $\MZ$ via parameter sets $\PZ$ seem to work better than other models discussed in the robust Bayes literature:
+\begin{itemize}
+\item Neighbourhood models
+\begin{itemize}
+\item set of distributions `close to' a central distribution $P_0$
+\item example: $\varepsilon$-contamination class:
+$\{ P : P = (1-\varepsilon) P_0 + \varepsilon Q, Q \in \mathcal{Q} \}$\\
+\quad\play\ not necessarily closed under Bayesian updating
+\end{itemize}
+\pause
+\item Density ratio class / interval of measures 
+\begin{itemize}
+\item set of distributions by bounds for the density function $f(\vartheta)$:
+\begin{align*}
+\mathcal{M}\uz_{l,u} = \big\{ f(\theta) :
+\exists c \in \posreals: l(\theta) \le c f(\theta) \le u(\theta)\big\}
+\end{align*}
+\item posterior set is bounded by updated $l(\theta)$ and $u(\theta)$
+\item $u(\theta)/l(\theta)$ is constant under updating\\
+\quad\play\ size of the set does not decrease with $n$\\
+\quad\play\ very vague posterior inferences
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}{***Summary}
+  \begin{itemize}%[<+->]
+%  \item *** parametric distributions often chosen for tractability / convenience (Normal vs Cauchy!)
+  \item choice of prior can severely affect inferences \\
+    even if your prior is `non-informative'
+  \item solution: systematic sensitivity analysis over prior parameters
+  \item models from canonical exponential family make this easy to do
+    %\cite{2005:quaeghe::expon} ,2012:benavolizaffalon,2015:benavolizaffalon}
+  \item close relations to robust Bayes literature, e.g.\ %\cite{1994:berger,2000:rios,2005:ruggeri}
+  \item concerns uncertainty in the prior\\
+    (uncertainty in data generating process: imprecise sampling models)
+%  \item here: focus on imprecise Dirichlet model
+  \item if your prior is informative then prior-data conflict can be an issue
+%    \cite{2009:walter,2013:diss-gw}\\
+%    (we'll come back to this in the system reliability talk)
+  \end{itemize}
+\end{frame}
 
 \end{document}
