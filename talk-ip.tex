@@ -58,10 +58,11 @@
 \usepackage{url}
 \usepackage{xargs}
 
-%\usepackage[backend=bibtex,style=authoryear,dashed=false]{biblatex}
-%\addbibresource{../bib/lundrefs.bib}
-%\renewcommand{\bibfont}{\normalfont\scriptsize}
-%\setlength{\bibhang}{3ex}
+\usepackage[backend=bibtex,style=authoryear,dashed=false]{biblatex}
+\addbibresource{all.bib}
+\addbibresource{lundrefs.bib}
+\renewcommand{\bibfont}{\normalfont\scriptsize}
+\setlength{\bibhang}{3ex}
 
 \usepackage{hyperref}
 
@@ -580,7 +581,30 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 %  \end{center}
 \end{frame}
 
-\iffalse
+\begin{frame}{Sensitivity Interpretation for Credal Sets}
+\uncover<1->{%
+\begin{block}{Uncertainty about probability statements}
+\centerline{smaller credal set $=$ more precise probability statements}
+\vspace*{1ex}
+\parbox[t]{0.45\textwidth}{\centering \textbf{Lottery A}\\
+                          Number of winning tickets:\\
+                          exactly known as 5 out of 100\\
+                          \play\ $P(\text{win}) = 5/100$}
+\qquad
+\parbox[t]{0.45\textwidth}{\centering \textbf{Lottery B}\\
+                          Number of winning tickets:\\
+                          not exactly known, supposedly\\
+                          between 1 and 7 out of 100\\
+                          \play\ $P(\text{win}) = [1/100,\, 7/100]$}
+\end{block}}
+\begin{itemize}
+\item Separate uncertainty \emph{within the model} (probability statements)\\
+from uncertainty \emph{about the model} (how certain about statements) %(which parameters).
+\item Systematic sensitivity analysis, robust Bayesian approach
+\end{itemize}
+\end{frame}
+
+\iffalse % ---------------------------------------------------------------------
 \begin{frame}
   \frametitle{$\lpr(\cdot)$ and $\upr(\cdot)$:
 %    Avoiding Sure Loss, Natural Extension, and Coherence}
@@ -625,7 +649,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 %    (why not?)
   \end{center}
 \end{frame}
-\fi
+\fi % --------------------------------------------------------------------------
 
 \begin{frame}{Bayesian Inference}
 \vspace*{-2ex}
@@ -652,13 +676,19 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}{Bayesian Inference with Sets of Priors}
-Bayesian inference with sets of priors (credal sets):\\ \emph{robust Bayesian inference}
+\begin{frame}{Bayesian Inference with Credal Sets}
+\begin{block}{Bayesian inference with sets of priors}
+set of priors $\MZ$ $\to$ sets of posteriors $\MN$\\
+by updating element by element\\[1ex]
+the Generalized Bayes Rule \parencite[GBR,][]{1991:walley}\\
+ensures \emph{coherence} (a consistency property)\\[1ex]
+Bounds for inferences (point estimate, \ldots) by min / max over $\MN$.
+\end{block}
+this offers advantages over usual Bayesian inference in case of
 \begin{itemize}
 \item prior ignorance / weakly informative priors
 \item prior-data conflict
 \end{itemize}
-***make noninformative prior thing short
 \end{frame}
 
 \begin{frame}{`Non-informative' Priors}
@@ -678,7 +708,7 @@ Bayesian inference with sets of priors (credal sets):\\ \emph{robust Bayesian in
   \end{exampleblock}
 %  \pause
   \alert{The uniform distribution does not really model prior ignorance.}
-  (Jeffreys prior is transformation-invariant, but depends on the sample space and can break decision making!)
+  (Jeffreys prior is transformation-invariant,\\ but depends on the sample space and can break decision making!)
 \end{frame}
 
 \begin{frame}{Prior Ignorance via Sets of Probabilities}
@@ -692,8 +722,8 @@ Bayesian inference with sets of priors (credal sets):\\ \emph{robust Bayesian in
     An object of 1kg has uncertain volume $V$ between $1\ell$ and $2\ell$.
     \begin{itemize}
     \item Set of all distributions over volume $V$ $\implies$ $E(V)\in[1,2]$.
-    \item Set of all distribution over density $\rho=1/V$ $\implies$ \\
-      $E(V)=E(1/\rho)\in[1,2]$
+    \item Set of all distributions over density $\rho=1/V$\\
+      \hspace*{31ex} $\implies$ $E(V)=E(1/\rho)\in[1,2]$
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -710,7 +740,7 @@ Bayesian inference with sets of priors (credal sets):\\ \emph{robust Bayesian in
   \begin{alertblock}{Solution: Near-Vacuous Sets of Priors}
     Only insist that the prior predictive, or other classes of inferences, are vacuous.
   \end{alertblock}
-  This can be done using sets of conjugate priors ***%\cite{2012:benavolizaffalon,2015:benavolizaffalon}.
+  This can be done using sets of conjugate priors\\ \parencite{2012:benavolizaffalon,2015:benavolizaffalon}.
 \end{frame}
 
 
@@ -741,9 +771,294 @@ Bayesian inference with sets of priors (credal sets):\\ \emph{robust Bayesian in
 %($\theta_1 \to \theta$, $\theta_2 \to 1-\theta$, $t_1 \to \yzr$, $t_2 = 1 - t_1$, $n_1 = x$, $n_2 = n-x$, $s \to \nzg$)
 \end{frame}
 
-\begin{frame}{}
-***do the whole param update thing, also near-noninf, like lund (?)
+\begin{frame}{Example: Imprecise Beta Model (IBM)}
+\begin{itemize}%[<+->]
+\item Bernoulli observations: 0/1 observations (failure/success)
+\item given: a set of $n$ i.i.d.\ observations and strong prior information
+\item we are, e.g., interested in probability for success in next trial
+\end{itemize}
+%\uncover<4->{
+\begin{block}{Beta-Binomial Model}
+\begin{tabular}{r|lcl}
+data :           & $s \mid p$        & $\sim$ & $\bin(n,p)$   \\[0.5ex]
+conjugate prior: & $p \mid \az, \bz$ & $\sim$ & $\be(\az,\, \bz)$  \\[0.5ex]
+\cline{1-4}
+posterior:       & $p \mid \an, \bn$ & $\sim$ & $\be(\an,\, \bn)$\rule{0ex}{2.5ex}
+%\quad ($\frac{\tau(\x)}{n} = \frac{s}{n}$)\rule{0ex}{2.5ex}
+\end{tabular}
+\end{block}
+where $s$ = number of successes in the $n$ observed trials\\[1ex] %}
+%uncover<2->{%
+Vary hyperparameters $(\nzg, \yzr)$ in a set $\PZc$ \play\ set of priors $\MZ$\\[1ex] %}
+%\uncover<4->{%
+Set of posteriors $\MN$ via $\PNc = \big\{(\nng,\ynr) \colon (\nzg,\yzr) \in \PZc \big\}$\\
+Bounds for inferences (point estimate, \ldots) by min/max over $\PZc$. %}
 \end{frame}
+
+\begin{frame}{Reparametrisation of the Beta Distribution}
+\uncover<1->{\play\ reparametrisation helps to understand the parameter update:\\} %effect of prior-data conflict:\\}
+\begin{tikzpicture}
+[pfeil/.style={-latex', line width=1mm, color=tuered, shorten <=1mm},
+ cyanrand/.style={rounded corners, text centered, draw=tuecyan!50, inner sep=1mm, line width=0.7mm},
+ redbrace/.style={draw=tuered, decoration=brace, decorate, line width=0.8mm},
+ redbox/.style={text centered, draw=tuered, inner sep=1.5mm, line width=1mm, minimum width=0.75\textwidth}]
+\uncover<1->{%
+\node at (0,0.2) {\parbox[c]{\textwidth}{%
+\begin{align*}
+\nzg &= \az + \bz\,,
+&
+\yzr &= \frac{\az}{\az + \bz}\,, \quad \text{which are updated as}\\%[1.5ex]
+%\\
+%\end{align*}
+%\intertext{%
+%such that
+%$\lambda \sim \ig(\nz+1,\nz\yz)$ and $\lambda\mid\mbf{t} \sim \ig(\nell+1,\nell\yell)$,
+%where}%
+%\begin{align*}
+\nng &= \nzg + n\,, 
+&
+\ynr &=  \frac{\nzg}{\nzg + n} \, \yzr + \frac{n}{\nzg + n} \cdot \frac{s}{n}
+\end{align*}
+}};}
+\uncover<2->{%
+\node[cyanrand] (yz) at (-0.9,-1.9) {$\yzr = \E[p]$};
+\draw [pfeil] (yz.north east) to [out= 30,in=260] ( 0.9,-0.65);
+\draw [pfeil] (yz.north west) to [out=130,in=240] (-1.7,0.4);}
+\uncover<3->{%
+\node[cyanrand] (yn) at ( 1.4,-1.9) {$\ynr = \E[p \mid s]$};
+\draw [pfeil] (yn.north)      to [out=130,in=280] (-1.4,-0.65);}
+\uncover<4->{%
+\node[cyanrand] (ml) at ( 4.3,-1.9) {ML estimator $\hat{p}$};
+\draw [pfeil] (ml.north)      to [out=100,in=330] (3.6,-0.65);}
+\uncover<5->{%
+\node[cyanrand] (nz) at (-4  ,-1.9) {$\nzg =$ pseudocounts};
+\draw [pfeil] (nz.north)      to [out=90,in=270] (-4.0,-0.65);
+\draw [pfeil] (nz.north west) to [out=95,in=240] (-5.2, 0.5);}
+\uncover<6->{%
+\node[redbox] at (0,-2.8) {$\E[p \mid s] = \ynr$ is a weighted average of $\E[p]$ and $\hat{p}$!};}
+\uncover<7->{%
+\node[redbox] at (0,-4.0) {$\V[p \mid s] = \dfrac{\ynr (1-\ynr)}{\nng + 1}$ decreases with $n$!};}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{}
+***param update point, then near-noninf set: works fine!
+\end{frame}
+
+
+\begin{frame}{Prior-Data Conflict}
+\uncover<1->{What if expert information and data tell different stories?\\[1ex]}
+\uncover<2->{%
+\begin{block}{Prior-Data Conflict}
+\begin{itemize}
+\item \emph{informative prior beliefs} and \emph{trusted data}\\ %\rule{0ex}{3ex}\\
+(sampling model correct, no outliers, etc.) are in conflict%\\%[2ex]
+\item ``[\ldots] the prior [places] its mass primarily on distributions
+in the sampling model for which the observed data is surprising''\\
+\parencite{2006:evans}
+\item there are not enough data to overrule the prior
+\end{itemize}
+\end{block}}
+%\uncover<3->{}
+%\uncover<4->{\play\ reparametrization helps to understand effect of prior-data conflict:\\}
+\end{frame}
+
+\begin{frame}{Beta-Binomial Model (BBM)}
+\hspace*{-12ex}
+\begin{columns}%[T]
+\begin{column}{0.55\textwidth}
+\begin{tikzpicture}
+\pgftransformscale{0.025}
+\uncover<1>{
+\input{tikzdevice/precise01.tex}
+}
+\uncover<2>{
+\input{tikzdevice/precise02.tex}
+\draw[-stealth,very thick] (110,175) -- (220,175) node [above,midway] {12 out of 16};
+}
+\uncover<3->{
+\input{tikzdevice/precise03.tex}
+\draw[-stealth,very thick,gray] (110,175) -- (220,175) node [above,midway,gray] {12 out of 16};
+}
+\uncover<4->{
+\draw[-stealth,very thick] (110,102) -- (220,167) node [above,midway,sloped] {16 out of 16};
+}
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.45\textwidth}
+\uncover<1->{%
+\begin{block}{no conflict:}
+prior $\nzg = 8$, $\yzr = 0.75$\\
+data $s/n = 12/16 = 0.75$
+\end{block}
+} %
+\uncover<2->{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangledown$}\vspace*{-1.5ex}
+\begin{block}{}
+$\nng = 24$, $\ynr = 0.75$
+\end{block}
+} %
+\uncover<4->{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangle$}\vspace*{-1.5ex}
+}
+\uncover<3->{%
+\begin{block}{prior-data conflict:}
+prior $\nzg = 8$, $\yzr = 0.25$\\
+data $s/n = 16/16 = 1$
+\end{block}
+} %
+\uncover<0>{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangledown$}\vspace*{-1.5ex}
+\begin{block}{}
+$\nng \in [20, 24]$, $\ynr \in [0.73, 0.86]$
+\end{block}
+} %
+%\uncover<5->{ %
+%\then\ same predictive prob.\ P!
+%}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Imprecise BBM} %with $\nz$ fixed}
+%IDM (Walley 1996)\\ Quaghebeur \& de Cooman (2005)
+IDM \parencite{1996:walley::idm}; \textcite{2005:quaeghebeurcooman}
+\hspace*{-12ex}
+\begin{columns}%[T]
+\begin{column}{0.55\textwidth}
+\begin{tikzpicture}
+\pgftransformscale{0.025}
+\uncover<1>{
+\input{tikzdevice/line01.tex}
+}
+\uncover<2>{
+\input{tikzdevice/line02.tex}
+\draw[-stealth,very thick] (110,175) -- (220,175) node [above,midway] {12 out of 16};
+}
+\uncover<3->{
+\input{tikzdevice/line03.tex}
+\draw[-stealth,very thick,gray] (110,175) -- (220,175) node [above,midway,gray] {12 out of 16};
+}
+\uncover<4->{
+\draw[-stealth,very thick] (110,102) -- (220,167) node [above,midway,sloped] {16 out of 16};
+}
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.45\textwidth}
+\uncover<1->{%
+\begin{block}{no conflict:}
+prior $\nzg = 8$, $\yzr \in [0.7, 0.8]$\\
+data $s/n = 12/16 = 0.75$
+\end{block}
+} %
+\uncover<2->{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangledown$}\vspace*{-1.5ex}
+\begin{block}{}
+$\nng = 24$, $\ynr \in [0.73, 0.77]$
+\end{block}
+} %
+\uncover<4->{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangle$}\vspace*{-1.5ex}
+}
+\uncover<3->{%
+\begin{block}{prior data conflict:}
+prior $\nzg = 8$, $\yzr \in [0.2, 0.3]$\\
+data $s/n = 16/16 = 1$
+\end{block}
+} %
+\uncover<0>{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangledown$}\vspace*{-1.5ex}
+\begin{block}{}
+$\nng \in [20, 24]$, $\ynr \in [0.73, 0.86]$
+\end{block}
+} %
+%\uncover<5->{ %
+%\then\ same imprecise predictive prob.\ $[\Pl,\Pu]$!
+%}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Imprecise BBM with $\nz$ interval}
+%Walley (1991, \S 5.4.3)\\ Walter \& Augustin (2009)
+\textcite[\S 5.4.3]{1991:walley}; \textcite{2009:WalterAugustin}; \textcite{2013:diss-gw}
+\hspace*{-12ex}
+\begin{columns}%[T]
+\begin{column}{0.55\textwidth}
+\begin{tikzpicture}
+\pgftransformscale{0.025}
+\uncover<1>{
+\input{tikzdevice/rect01.tex}
+}
+\uncover<2>{
+\input{tikzdevice/rect02.tex}
+\draw[-stealth,very thick] (110,175) -- (193,175) node [above,midway] {12 out of 16};
+}
+\uncover<3>{
+\input{tikzdevice/rect03.tex}
+\draw[-stealth,very thick,gray] (110,175) -- (193,175) node [above,midway,gray] {12 out of 16};
+}
+\uncover<4>{
+\input{tikzdevice/rect04.tex}
+\draw[-stealth,very thick,gray] (110,175) -- (193,175) node [above,midway,gray] {12 out of 16};
+\draw[-stealth,very thick] (110,102) -- (213,180) node [above,midway,sloped] {16 out of 16};
+%\draw[-stealth,very thick, postaction={decorate,decoration={raise=2pt,text along path, %
+%                                       text={16 out of 16}}}] (110,95) .. controls +(right:30) and +(down:30) .. (210,183);
+%\draw[-stealth,very thick] (110,95) .. controls +(right:10) and +(down:10) .. (210,183) node [below,midway,sloped] {16 out of 16};
+}
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.45\textwidth}
+\uncover<1->{%
+\begin{block}{no conflict:}
+prior $\nzg\! \in [4, 8]$, $\yzr\! \in [0.7, 0.8]$\\
+data $s/n = 12/16 = 0.75$
+\end{block}
+} %
+\uncover<2->{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangledown$}\vspace*{-1.5ex}
+\begin{block}{}
+%$\gruen{\nn} \in [20, 24]$,
+\centering $\ynr \in [0.73, 0.77]$
+%\centering ``spotlight'' shape
+\end{block}
+} %
+\uncover<3->{%
+\begin{block}{prior-data conflict:}
+prior $\nzg \in\! [4, 8]$, $\yzr\! \in [0.2, 0.3]$\\
+data $s/n = 16/16 = 1$
+\end{block}
+} %
+\uncover<4->{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangledown$}\vspace*{-1.5ex}
+\begin{block}{}
+%$\gruen{\nn} \in [20, 24]$,
+\centering $\ynr \in [0.73, 0.86]$
+%\centering ``banana'' shape
+\end{block}
+} %
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Example: Scaled Normal Data}
+\begin{tikzpicture}
+\uncover<1>{%
+\node (0,0) {\begin{minipage}{0.99\textwidth}%
+\begin{block}{Example: Scaled Normal Data}
+\begin{tabular}{r|lcl}
+Data :           & $\x\mid\mu$        & $\sim$ & $\norm(\mu,1)$\\[0.5ex] %\sigma_0^2)$ \quad ($\sigma_0^2$ known)\\[0.5ex]
+conjugate prior: & $\mu\mid\nzg,\yzr$ & $\sim$ & $\norm(\yzr, 1/\nzg)$  \\[0.5ex]
+\cline{1-4}
+posterior:       & $\mu\mid\nng,\ynr$ & $\sim$ & $\norm(\ynr, 1/\nng)$ \quad ($\tau(\x)/n = \bar{x}$)\rule{0ex}{2.5ex} %& \\[0.5ex]
+\end{tabular}
+\end{block}\vspace*{18ex}\end{minipage}};}
+\uncover<2>{%
+\node (0,0) {%
+\includegraphics[trim = 20mm 20mm 20mm 25mm, clip, width=\textwidth]{figs/jstp-paper_nv_nvar_vertfu01_081128}};}
+\end{tikzpicture}
+\end{frame}
+
 
 
 
@@ -854,6 +1169,16 @@ $\{ P : P = (1-\varepsilon) P_0 + \varepsilon Q, Q \in \mathcal{Q} \}$\\
 %    \cite{2009:walter,2013:diss-gw}\\
 %    (we'll come back to this in the system reliability talk)
   \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+%\begin{frame}[allowframebreaks]{References}
+%
+%  \bibliographystyle{plain}
+%  {\scriptsize
+%  \bibliography{../_diss/v1/bib/other-refs,../_diss/v1/bib/itip-refs} 
+%  }
+\printbibliography[heading=none]
 \end{frame}
 
 \end{document}
