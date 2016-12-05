@@ -248,6 +248,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \item communicated?
     \end{itemize}
   \end{block}
+\pause
   \begin{block}{Inference}
     How can we use our theory of uncertainty for
     \begin{itemize}
@@ -292,6 +293,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
       my probability $P(B)$ is $0.0173$
     \end{itemize}
   \end{exampleblock}
+\pause
   \begin{alertblock}{}
     what do these numbers actually mean? \\
     how would you measure them?
@@ -304,9 +306,11 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     $P(A)=0$ $\iff$ $A$ is practically impossible {\hfill \scriptsize logically?}\\
     $P(A)=1$ $\iff$ $A$ is practically certain
   \end{block}
+\pause
   \begin{alertblock}{}
     what about values between $0$ and $1$, such as $P(A)=0.2$?
   \end{alertblock}
+\pause
   \begin{block}{Interpretation: General Case}
     \begin{itemize}
     \item it's (like) a \alert{frequency}
@@ -319,11 +323,12 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 \begin{frame}
   \frametitle{Probability: Frequency Interpretation}
   $P(A)=0.2$ means:
-  \begin{itemize}
+  \begin{itemize}%[<+->]
   \item in 1 out of 5 times, it rains tomorrow \\
-    \textbf{??? (tomorrow is not repeatable!)}
-  \item on a `day like this', in 1 out of 5 times, it rains the next day
+    \uncover<2->{\textbf{??? (tomorrow is not repeatable!)}}
+  \item<3-> on a `day like this', in 1 out of 5 times, it rains the next day
   \end{itemize}
+\uncover<4->{%
   \begin{block}{Frequency Interpretation}
     \begin{itemize}
     \item[\gplus] intuitive, easy to understand
@@ -331,18 +336,19 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \item[\gmins] needs plenty of data, or strong symmetry assumptions
     \item[\gexcl] aleatory
     \end{itemize}
-  \end{block}
+  \end{block}}
 \end{frame}
 
 \begin{frame}
   \frametitle{Probability: Betting Interpretation}
   $P(A)=0.2$ means:
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item I would \textit{now} pay at most \euro 0.2 \\
     if \textit{tomorrow} I am paid \euro 1 in case it rains
   \item I would \textit{tomorrow} pay \euro 1 in case it rains \\
     if I am \textit{now} paid at least \euro 0.2
   \end{itemize}
+\uncover<3->{%
   \begin{center}
     \begin{tikzpicture}
       \draw (-4,0) -- (4,0);
@@ -353,15 +359,16 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
       \draw (-2,0.1) node[above] {$p$} -- (-2,-0.1) node[anchor=north east,xshift=1cm] {buy $A$ for price $p$};
       \draw ( 2,0.1) node[above] {$q$} -- ( 2,-0.1) node[anchor=north west,xshift=-1cm] {sell $A$ for price $q$};
     \end{tikzpicture}
-  \end{center}
+  \end{center}}
   \vspace*{-1.5ex}
-  \begin{block}{Betting (Degree of Belief) Interpretation}
+\uncover<4->{%
+  \begin{block}{Betting Interpretation (degree of belief)}
     \begin{itemize}
     \item[\gplus] no reference class, works also for \alert{one-shot events}
     \item[\gmins] needs plenty of elicitation or plenty of data
     \item[\gexcl] epistemic
     \end{itemize}
-  \end{block}
+  \end{block}}
 \end{frame}
 
 \begin{frame}
@@ -395,6 +402,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 %  \end{block}
   \vspace*{1ex}
 %  \begin{block}{Credible intervals}
+\pause
 \structure{Credible intervals (Bayesian Statistics)}
       \begin{itemize}
   \setlength{\itemsep}{0pt}
@@ -412,6 +420,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 %  \begin{column}{0.8\textwidth}
   \vspace*{1ex}
 %  \begin{block}{Interval probability (bounding probabilities directly)}
+\pause
 \structure{Interval probability (bounding probabilities directly)}
     \begin{itemize}
   \setlength{\itemsep}{0pt}
@@ -444,6 +453,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
       my upper probability $\upr(A)$ is $0.4$
     \end{itemize}
   \end{exampleblock}
+\pause
   \begin{alertblock}{}
     what do these numbers actually mean? \\
     how would you measure them?
@@ -453,13 +463,14 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 \begin{frame}
   \frametitle{$\lpr$ and $\upr$: Betting Interpretation}
   $\lpr(A)=0.1$ and $\upr(A)=0.4$ means:
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item I would \textit{now} pay at most \euro 0.1 \\
     if \textit{tomorrow} I am paid \euro 1 in case it rains
   \item I would \textit{tomorrow} pay \euro 1 in case it rains \\
     if I am \textit{now} paid at least \euro 0.4
   \end{itemize}
   \vspace*{-3ex}
+\uncover<3->{%
   \begin{center}
     \begin{tikzpicture}
       \draw (-4,0) -- (4,0);
@@ -474,15 +485,16 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
       \draw (-2,0.1) node[above] {$p$} -- (-2,-0.1) node[anchor=north east,xshift= 0.8cm] {\small buy $A$ for price $p$};
       \draw ( 2,0.1) node[above] {$q$} -- ( 2,-0.1) node[anchor=north west,xshift=-0.8cm] {\small sell $A$ for price $q$};
     \end{tikzpicture}
-  \end{center}
+  \end{center}}
 \vspace*{-1ex}
+\uncover<4->{%
   \begin{block}{Betting Interpretation}
     \begin{itemize}
     \item[\gplus] no reference class, works also for \alert{one-shot events}
     \item[\gplus] works with partial elicitation and / or sparse data
     \item[\gexcl] epistemic
     \end{itemize}
-  \end{block}
+  \end{block}}
 %  {\scriptsize \qquad frequency interpretation?}
 \end{frame}
 
@@ -498,6 +510,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     e.g. number of components that fail in the next year \\
     $\Omega=\{0,1,2,3,4,5\}$
   \end{exampleblock}
+\pause
   \begin{definition}
     An \alert{event} is a subset of $\Omega$.
     %\\[1ex]
@@ -525,16 +538,18 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     $\upr(A)=1-\lpr(A^c)$, for all $A\subseteq\Omega$
   \end{definition}
   \begin{itemize}
-  \item $A^c$ = \alert{complement} (or \alert{negation}) of $A$ = all elements {\it not} in $A$
-  \begin{exampleblock}{Example}
-    complement of `at most 3 components will fail' ($A=\{0,1,2,3\}$)
-    \\ is `at least 4 components will fail' ($A^c=\{4,5\}$)
-  \end{exampleblock}
-  \item {\small the identity $\upr(A)=1-\lpr(A^c)$ is implied
-    by the betting interpretation }%\\
+  \item<2-> $A^c$ = \alert{complement} (or \alert{negation}) of $A$ = all elements {\it not} in $A$
+%  {\small 
+%  \begin{exampleblock}{\small Example}
+%    complement of `at most 3 components will fail' ($A=\{0,1,2,3\}$)
+%    \\ is `at least 4 components will fail' ($A^c=\{4,5\}$)
+%  \end{exampleblock}}
+  \item<3-> the identity $\upr(A)=1-\lpr(A^c)$ is implied
+    by the betting interpretation %\\
 %    {\scriptsize \hfill see exercises}
-  \item {\small \textit{every} event $\leftrightarrow$ sparse data? \\
-    we can always set $\lpr(A)=0$ and $\lpr(A^c)=0$ ($\iff\upr(A)=1$)!}
+  \item<4-> \textit{every} event $\leftrightarrow$ sparse data? \\
+    we can always set $\lpr(A)=0$ and $\lpr(A^c)=0$ ($\iff\upr(A)=1$)!
+  \item<5-> $\lpr$ specification for related events may allow to raise $\lpr(A)$ (correcting for consistency)
   \end{itemize}
 \end{frame}
 
@@ -566,6 +581,7 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
 \end{column}
 \end{columns}
   \end{definition}
+\pause
   \begin{definition}
     The \alert{credal set} $\mathcal{M}$
     of $\lpr$
@@ -573,11 +589,13 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
     \\ 
     $\lpr(A)\le\pr(A)\le\upr(A)$ for all $A\subseteq\Omega$.
   \end{definition}
-  \begin{block}{Sensitivity Interpretation of $\lpr$}
+\pause
+  \begin{block}{Sensitivity Interpretation of $\lpr$ and $\upr$}
     One of the probability measures $\pr$ in the credal set $\mathcal{M}$\\
     is the correct one,
     \textit{but we do not know which}.
   \end{block}
+\pause
 %  \begin{center}
     \textbf{crucial: no distribution over $\mathcal{M}$ assumed!} %\\
 %    (why not?)
@@ -601,9 +619,9 @@ rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minim
                           \play\ $P(\text{win}) = [1/100,\, 7/100]$}
 \end{block}}
 \begin{itemize}
-\item Separate uncertainty \emph{within the model} (probability statements)\\
+\item<2-> Separate uncertainty \emph{within the model} (probability statements)\\
 from uncertainty \emph{about the model} (how certain about statements) %(which parameters).
-\item Systematic sensitivity analysis, robust Bayesian approach
+\item<3-> Systematic sensitivity analysis, robust Bayesian approach
 \end{itemize}
 \end{frame}
 
@@ -681,54 +699,63 @@ from uncertainty \emph{about the model} (how certain about statements) %(which p
 
 \begin{frame}{Bayesian Inference with Credal Sets}
 \begin{block}{Bayesian inference with sets of priors}
+\uncover<1->{%
 set of priors $\MZ$ $\to$ sets of posteriors $\MN$\\
-by updating element by element\\[1ex]
+by updating element by element }\\[1ex]
+\uncover<2->{%
 the Generalized Bayes Rule \parencite[GBR,][]{1991:walley}\\
-ensures \emph{coherence} (a consistency property)\\[1ex]
-Bounds for inferences (point estimate, \ldots) by min / max over $\MN$.
+ensures \emph{coherence} (a consistency property) }\\[1ex]
+\uncover<3->{%
+Bounds for inferences (point estimate, \ldots) by min / max over $\MN$}
 \end{block}
-this offers advantages over usual Bayesian inference in case of
+\uncover<4->{%
+this offers advantages over usual Bayesian inference in case of}
 \begin{itemize}
-\item prior ignorance / weakly informative priors
-\item prior-data conflict
+\item<4-> prior ignorance / weakly informative priors
+\item<5-> prior-data conflict
 \end{itemize}
 \end{frame}
 
 \begin{frame}{`Non-informative' Priors}
   How to construct a prior if we do not have a lot of information?
-  \begin{alertblock}{Laplace: Principle of Indifference}
+\pause
+  \begin{block}{Laplace: Principle of Indifference}
     Use the uniform distribution.
-  \end{alertblock}
+  \end{block}
+\pause
   Obvious issue: this depends on the parametrisation!
-%  \pause
+\pause
   \begin{exampleblock}{Example}
     An object of 1kg has uncertain volume $V$ between $1\ell$ and $2\ell$.
     \begin{itemize}
-    \item Uniform distribution over volume $V$ $\implies$ $E(V)=1.5\ell$.
-    \item Uniform distribution over density $\rho=1/V$ $\implies$ \\
-      $E(V)=E(1/\rho)=\int_{0.5}^1 2/\rho d\rho=2(\ln 1-\ln 0.5)=1.39\ell$
+    \item<5-> Uniform distribution over volume $V$ $\implies$ $E(V)=1.5\ell$.
+    \item<6-> Uniform distribution over density $\rho=1/V$ $\implies$ \\
+      $E(V)=E(1/\rho)=\int_{0.5}^1 2/\rho\, \dd\rho=2(\ln 1-\ln 0.5)=1.39\ell$
     \end{itemize}
   \end{exampleblock}
-%  \pause
-  \alert{The uniform distribution does not really model prior ignorance.}
-  (Jeffreys prior is transformation-invariant,\\ but depends on the sample space and can break decision making!)
+\uncover<7->{%
+  \alert{The uniform distribution does not really model prior ignorance!}}
+\uncover<8->{%
+  {\small (Jeffreys prior is transformation-invariant,\\ but depends on the sample space and can break decision making!)}}
 \end{frame}
 
 \begin{frame}{Prior Ignorance via Sets of Probabilities}
-   How to construct prior if we do not have a lot of information?
-  \begin{alertblock}{Boole: Probability Bounding}
+   How to construct a prior if we do not have a lot of information?
+\pause
+  \begin{block}{Boole: Probability Bounding}
     Use the set of all probability distributions (\alert{vacuous model}).
-  \end{alertblock}
+  \end{block}
   Results no longer depend on parametrisation!
-%  \pause
+\pause
   \begin{exampleblock}{Example}
     An object of 1kg has uncertain volume $V$ between $1\ell$ and $2\ell$.
     \begin{itemize}
-    \item Set of all distributions over volume $V$ $\implies$ $E(V)\in[1,2]$.
-    \item Set of all distributions over density $\rho=1/V$\\
+    \item<4-> Set of all distributions over volume $V$ $\implies$ $E(V)\in[1,2]$.
+    \item<5-> Set of all distributions over density $\rho=1/V$\\
       \hspace*{31ex} $\implies$ $E(V)=E(1/\rho)\in[1,2]$
     \end{itemize}
   \end{exampleblock}
+\vspace*{8.25ex}
 \end{frame}
 
 \begin{frame}{Prior Ignorance via Sets of Probabilities}
@@ -738,10 +765,10 @@ this offers advantages over usual Bayesian inference in case of
     is again vacuous,
     regardless of the likelihood.
   \end{theorem}
-  \alert{We can never learn anything when starting from a vacuous set of priors.}
-  \pause
+  \alert{We can never learn anything when starting from a vacuous set of priors!}
+\pause
   \begin{alertblock}{Solution: Near-Vacuous Sets of Priors}
-    Only insist that the prior predictive, or other classes of inferences, are vacuous.
+    Only insist that the prior predictive, or other classes of inferences,\\ are vacuous.
   \end{alertblock}
   This can be done using sets of conjugate priors\\ \parencite{2012:benavolizaffalon,2015:benavolizaffalon}.
 \end{frame}
