@@ -57,6 +57,7 @@
 \usepackage{xcolor}
 \usepackage{url}
 \usepackage{xargs}
+%\usepackage[normalem]{ulem}
 
 \usepackage[backend=bibtex,style=authoryear,dashed=false]{biblatex}
 \addbibresource{all.bib}
@@ -207,6 +208,8 @@
 
 \newcommand{\comp}[1]{\raisebox{-1mm}{\tikz{\node[%type1
 rectangle,rounded corners=0mm,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minimum size=4mm]{#1};}}}
+
+\newcommand*\cancel[2][very thick]{\tikz[baseline] \node [cross out, draw=tueorange, anchor=text, inner sep=0pt, #1]{#2};} 
 
 \newcommand{\cyansec}[1]{\textcolor{tuecyan}{\large\bf #1}}
 \newcommand{\cyanalert}[1]{\textcolor{tuecyan}{#1}}
@@ -743,56 +746,43 @@ this offers advantages over usual Bayesian inference in case of
   This can be done using sets of conjugate priors\\ \parencite{2012:benavolizaffalon,2015:benavolizaffalon}.
 \end{frame}
 
-
 \begin{frame}{Example: Imprecise Beta Model (IBM)}
-***use other BBM intro slides?
-\begin{itemize}
-\item<1-> binomial likelihood (observing $x$ successes in $n$ trials)
-\begin{align*}
-\cpdf{x}{\theta} &= {n \choose x} \, \theta^x (1-\theta)^{n-x}
-\end{align*}
-\item<1-> conjugate Beta prior
-      \begin{itemize} 
-      \item with mean $\yzr$
-        = prior expected probability of success
-      \item and prior strength parameter $\nzg>0$
-      \end{itemize}
-\begin{align*}
-\pdf{\theta} &\propto \theta^{\nzg\yzr-1}\, (1-\theta)^{\nzg(1-\yzr)-1}
-\end{align*}
-\item<2-> ***informative set of priors: Use the set $\MZ$ of Beta priors with $\yzr \in [\yzlr, \yzur]$ and
-      \begin{itemize} 
-      \item $\nzg > 0$ fixed, or
-      \item $\nzg \in [\nzlg, \nzug]$
-      \end{itemize}
-\item<3-> $\cexpec{\theta}{x} = \ynr$ is a weighted average of $\expec{\theta} = \yzr$ and $\dfrac{x}{n}$!
-\item<4-> $\cvar{\theta}{x} = \dfrac{\ynr (1-\ynr)}{\nng + 1}$ decreases with $n$!
-\end{itemize}
-%($\theta_1 \to \theta$, $\theta_2 \to 1-\theta$, $t_1 \to \yzr$, $t_2 = 1 - t_1$, $n_1 = x$, $n_2 = n-x$, $s \to \nzg$)
-\end{frame}
-
-\begin{frame}{Example: Imprecise Beta Model (IBM)}
-\begin{itemize}%[<+->]
+\begin{itemize}[<+->]
 \item Bernoulli observations: 0/1 observations (failure/success)
-\item given: a set of $n$ i.i.d.\ observations and strong prior information
+\item given: $s$ successes in $n$ i.i.d.\ trials and strong prior information
 \item we are, e.g., interested in probability for success in next trial
 \end{itemize}
-%\uncover<4->{
+\vspace*{-2ex}
+\begin{tikzpicture}
+\uncover<4>{%
+\node {\parbox{\textwidth}{%
 \begin{block}{Beta-Binomial Model}
-\begin{tabular}{r|lcl}
-data :           & $s \mid p$        & $\sim$ & $\bin(n,p)$   \\[0.5ex]
-conjugate prior: & $p \mid \az, \bz$ & $\sim$ & $\be(\az,\, \bz)$  \\[0.5ex]
+\begin{tabular}{r|lcll}
+data :           & $s \mid p$        & $\sim$ & $\bin(n,p)$   \\ %[0.5ex]
+conjugate prior: & $p \mid \az, \bz$ & $\sim$ & $\be(\az,\, \bz)$ & \phantom{$\be(\nzg, \yzr)$} \rule{0ex}{2.5ex}\\[0.5ex]
 \cline{1-4}
-posterior:       & $p \mid \an, \bn$ & $\sim$ & $\be(\an,\, \bn)$\rule{0ex}{2.5ex}
+posterior:       & $p \mid \an, \bn$ & $\sim$ & $\be(\an,\, \bn)$ & \phantom{$\be(\nng, \ynr)$} \rule{0ex}{2.5ex}
 %\quad ($\frac{\tau(\x)}{n} = \frac{s}{n}$)\rule{0ex}{2.5ex}
 \end{tabular}
-\end{block}
-where $s$ = number of successes in the $n$ observed trials\\[1ex] %}
-%uncover<2->{%
-Vary hyperparameters $(\nzg, \yzr)$ in a set $\PZc$ \play\ set of priors $\MZ$\\[1ex] %}
-%\uncover<4->{%
+\end{block}}};}
+\uncover<5->{%
+\node {\parbox{\textwidth}{%
+\begin{block}{Beta-Binomial Model}
+\begin{tabular}{r|lcll}
+data :           & $s \mid p$        & $\sim$ & $\bin(n,p)$   \\ %[0.5ex]
+conjugate prior: & $p \mid \az, \bz$ & $\sim$ & \cancel{$\be(\az,\, \bz)$} & $\be(\nzg, \yzr)$ \rule{0ex}{2.5ex} \\[0.5ex]
+\cline{1-4}
+posterior:       & $p \mid \an, \bn$ & $\sim$ & \cancel{$\be(\an,\, \bn)$} & $\be(\nng, \ynr)$ \rule{0ex}{2.5ex}
+%\quad ($\frac{\tau(\x)}{n} = \frac{s}{n}$)\rule{0ex}{2.5ex}
+\end{tabular}
+\end{block}}};}
+\end{tikzpicture}
+%where $s$ = number of successes in the $n$ observed trials\\[1ex] %}
+\uncover<6->{%
+Vary hyperparameters $(\nzg, \yzr)$ in a set $\PZc$ \play\ set of priors $\MZ$\\[1ex] }
+\uncover<7->{%
 Set of posteriors $\MN$ via $\PNc = \big\{(\nng,\ynr) \colon (\nzg,\yzr) \in \PZc \big\}$\\
-Bounds for inferences (point estimate, \ldots) by min/max over $\PZc$. %}
+Bounds for inferences (point estimate, \ldots) by min/max over $\PZc$. }
 \end{frame}
 
 \begin{frame}{Reparametrisation of the Beta Distribution}
