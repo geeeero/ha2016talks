@@ -808,7 +808,7 @@ posterior:       & $p \mid \an, \bn$ & $\sim$ & \cancel{$\be(\an,\, \bn)$} & $\b
 \uncover<6->{%
 Vary hyperparameters $(\nzg, \yzr)$ in a set $\PZc$ \play\ set of priors $\MZ$\\[1ex] }
 \uncover<7->{%
-Set of posteriors $\MN$ via $\PNc = \big\{(\nng,\ynr) \colon (\nzg,\yzr) \in \PZc \big\}$\\
+Set of posteriors $\MN$ via $\PNc = \big\{(\nng,\ynr) \colon (\nzg,\yzr) \in \PZc \big\}$\\[1ex]
 Bounds for inferences (point estimate, \ldots) by min/max over $\PZc$. }
 \end{frame}
 
@@ -858,10 +858,60 @@ Bounds for inferences (point estimate, \ldots) by min/max over $\PZc$. }
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}{}
-***param update point, then near-noninf set: works fine!
+\begin{frame}{Beta-Binomial Model (BBM)}
+\hspace*{-12ex}
+\begin{columns}%[T]
+\begin{column}{0.55\textwidth}
+\begin{tikzpicture}
+\pgftransformscale{0.025}
+\uncover<1>{
+\input{tikzdevice/noninfsg1.tex}
+}
+\uncover<2>{
+\input{tikzdevice/noninfsg2.tex}
+\draw[-stealth,very thick] (115,142) -- (225,172) node [above,midway, sloped] {12 out of 16};
+}
+\uncover<3->{
+\input{tikzdevice/noninfln1.tex}
+\draw[-stealth,very thick, gray] (115,142) -- (225,172) node [above,midway,sloped,gray] {12 out of 16};
+}
+\uncover<4->{
+\input{tikzdevice/noninfln2.tex}
+\draw[-stealth,very thick] (115,142) -- (225,172) node [above,midway, sloped] {12 out of 16};
+}
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.45\textwidth}
+\uncover<1->{%
+\begin{block}{single prior (uniform)}
+prior $\nzg = 2$, $\yzr = 0.5$\\
+data $s/n = 12/16 = 0.75$
+\end{block}
+} %
+\uncover<2->{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangledown$}\vspace*{-1.5ex}
+\begin{block}{}
+$\nng = 18$, $\ynr = 0.72$
+\end{block}
+} %
+%\uncover<0>{%
+%\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangle$}\vspace*{-1.5ex}
+%}
+\uncover<3->{%
+\begin{block}{near-noninf.\ set of priors}
+prior $\nzg = 2$, $\yzr \in (0,1)$\\
+data $s/n = 12/16 = 0.75$
+\end{block}
+} %
+\uncover<4->{%
+\vspace*{-1.5ex}\centerline{\color{tueblue} $\blacktriangledown$}\vspace*{-1.5ex}
+\begin{block}{}
+$\nng = 18$, $\ynr \in [0.67, 0.77]$
+\end{block}
+} %
+\end{column}
+\end{columns}
 \end{frame}
-
 
 \begin{frame}{Prior-Data Conflict}
 \uncover<1->{What if expert information and data tell different stories?\\[1ex]}
@@ -1076,9 +1126,6 @@ posterior:       & $\mu\mid\nng,\ynr$ & $\sim$ & $\norm(\ynr, 1/\nng)$ \quad ($\
 \end{tikzpicture}
 \end{frame}
 
-
-
-
 \begin{frame}{%General Framework for 
 Canonical Exponential Families}
   Conjugate priors like the Beta can be constructed
@@ -1087,12 +1134,14 @@ Canonical Exponential Families}
   \begin{equation*}
     f(x \mid \psi)=h(x)\exp\big\{\psib^T\tau(x) - \bpsib) \big\}
   \end{equation*}
+  \vspace*{-2.5ex}
   \begin{itemize}
   \item includes multinomial, normal, Poisson, exponential, \dots
   \item $\psi$ generally a transformation of original parameter $\theta$
   \end{itemize}
   \pause
   \end{definition}
+  \vspace*{-0.5ex}
   \begin{definition}[Family of conjugate priors]
   A family of priors for i.i.d.\ sampling from the can.\ exp.\ family:
   \begin{equation*}
@@ -1125,17 +1174,103 @@ Canonical Exponential Families}
 \end{itemize}
 \end{frame}
 
+\iffalse
 \begin{frame}{%General Framework for 
 IP with Canonical Exponential Families}
 %\pause
 \begin{itemize}
-\item usefulness of this framework for IP / robust Bayes\\ discovered by Quaghebeur \& de Cooman ***%\cite{2005:quaeghe::expon}
-\item near-noninformative sets of priors\\ developed by Benavoli \& Zaffalon ***%\cite{2012:benavolizaffalon,2015:benavolizaffalon}
-\item for informative sets of priors, Walter \& Augustin ***%\cite{2013:diss-gw,2009:walter}
+\item usefulness of this framework for IP / robust Bayes\\ discovered by \textcite{2005:quaeghebeurcooman} %Quaghebeur \& de Cooman
+\item near-noninformative sets of priors\\ developed by Benavoli and Zaffalon \parencite*{2012:benavolizaffalon,2015:benavolizaffalon}
+\item for informative sets of priors, \textcite{2009:WalterAugustin} %Walter \& Augustin
   suggest to use parameter sets $\PZ = [\nzlg,\nzug] \times [\yzlr, \yzur]$
 \end{itemize}
 \end{frame}
+\fi
 
+\begin{frame}{General Model Properties}
+\uncover<1->{%
+Good inference properties} %\hyperlink{othermodels-app}{\small (cf.\ other models based on sets of priors)}}
+\begin{itemize}%[<+->]
+%\note<10>[item]{In contrast to other models based on sets of priors,\\
+%this model is easy to handle and to elicit,\\ and has very favourable inference properties}
+\item<1-> $n \to \infty$\hspace*{1.6ex}%
+%\uncover<2->{\then\ \ $\ynr$ values in $\PNc \to \frac{\tau(\x)}{n}$\hspace*{0.9ex}}%
+%\uncover<3->{\then\ \ `Bayesian consistency'}
+\uncover<2->{\play\ $\ynr$ stretch in $\PNc \to 0$\hspace*{1.6ex}}%
+\uncover<3->{\play\ precise inferences}
+%\item<4-> larger $\nzg$\hspace*{1.6 ex}\play\ larger $\PNc$ \hspace*{8.84ex}\play\ more vague inferences
+%\note<10>[item]{larger $\nzg$ as compared to $n$:
+%more weight on imprecise prior $\MZ$\\ leads to more imprecise posterior $\MN$}
+\item<4-> larger range of $\yzr$ in $\PZc$\hspace*{1.6ex}\play\ larger range of $\ynr$ in $\PNc$\\[0.5ex]
+\hspace*{30.02ex}\play\ more vague inferences
+%\note<10>[item]{more imprecise prior $\MZ$ leads to more imprecise $\MN$}
+\end{itemize}
+\uncover<5->{%
+Model very easy to handle:}
+\begin{itemize}%[<+->]
+\item<5-> Hyperparameter set $\PZc$ defines set of priors $\MZ$
+\item<6-> Hyperparameter set $\PNc$ defines set of posteriors $\MN$
+\item<7-> $\PZc \to \PNc$ is easy: $\nng = \nzg + n$, $\ynr = \frac{\nzg}{\nzg + n}\,\yzr + \frac{n}{\nzg + n}\cdot\frac{\tau(\x)}{n}$
+%\item<9-> For quantities linear in posteriors, bounds are attained at ``pure'' posteriors $p(\psib\mid\nng,\ynr)$
+%\then\ optimise over $\PNc$ (not over $\MN$)
+\item<8-> Often, optimising over $(\nng,\ynr) \in \PNc$ is also easy:\\
+\alert{closed form solution} for $\ynr$ = posterior `guess' for $\frac{\tau(\x)}{n}$ (think: $\bar{x}$)\\
+when $\PZc$ has `nice' shape
+\end{itemize}
+\end{frame}
+
+\frame{\frametitle{Hyperparameter Set Shapes}
+%graphs line, rectangle, eggplant
+\vspace*{-4ex}
+\begin{tikzpicture}
+%\uncover<1>{\node {\includegraphics[scale=0.75]{../R/shape0.pdf}};
+%            \draw[-stealth,very thick] (-1,-0.4) -- (2.3,1.1) node [above,midway,sloped] {+ data};}
+\uncover<1>{\node {\includegraphics[scale=0.75]{figs/shape1}};
+            \draw[-stealth,very thick] (-1,-0.4) -- (2.3,1.1) node [above,midway,sloped] {+ data};}
+\uncover<2>{\node {\includegraphics[scale=0.75]{figs/shape2}};
+            \draw[-stealth,very thick] ( 0,-0.5) -- (2.3,1.1) node [above,midway,sloped] {+ data};}
+\uncover<3>{\node {\includegraphics[scale=0.75]{figs/shape3}};
+            \draw[-stealth,very thick] ( 0,-0.5) -- (2.3,1.1) node [above,midway,sloped] {+ data};}
+\end{tikzpicture}
+}
+
+\begin{frame}{Hyperparameter Set Shapes}
+\begin{itemize}%[<+->]
+\item<1-> Set shape is crucial modeling choice:\\ %A range of $\nzg$ values is needed for \pdc\ reaction
+trade-off between model complexity and model behaviour
+% \begin{itemize}
+\item<2-> $\PZc\! = \nzg \times [\yzlr, \yzur]$
+ %{\small (Walley\,1996;\,Quaghebeur\,\&\,de\,Cooman\,2005)}:\\
+ {\footnotesize \parencite{1996:walley::idm,2005:quaeghebeurcooman}:}\\
+ $\PNc\! = \nng \times [\ynlr, \ynur]$ \play\ optimise over $[\ynlr, \ynur]$ only,\\
+ \hspace*{20.9ex}but no prior-data conflict sensitivity
+\item<3-> $\PZc\! = [\nzlg,\nzug] \times [\yzlr, \yzur]$ %{\small (Walley 1991; Walter \& Augustin 2009)}:\\
+ {\footnotesize \parencite{1991:walley,2009:WalterAugustin}:}\\
+ $\PNc$ have non-trivial forms (banana / spotlight), but prior-data conflict sensitivity and closed form for $\min / \max \ynr$ over $\PNc$\\
+ implemented as \textsf{R} package \texttt{luck} {\footnotesize \parencite{luck-package}}
+% For other inferences, \textbf{R} package \hyperlink{luck-app}{\texttt{luck}} implements optimisation
+% over $\PNc$ via box-constraint optimisation over $\PZc$
+% \end{itemize}
+\item<4-> Other set shapes possible, but may be more difficult to handle %elicit
+%\item<8-> Prior information may be such that range of $\yzr$ changes with $\nzg$ (or vice versa)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Hyperparameter Set Shapes}
+%\hspace*{-2ex}%
+%\uncover<2->{%
+%\vspace*{-7ex}%
+%\begin{center} %trim=l b r t
+\vspace*{2ex}%
+set shape for strong prior-data agreement {\small \parencite{ipmu2016}} %[A.2]{2013:diss-gw}}
+\begin{tikzpicture}
+%\includegraphics[trim = 40mm 35mm 40mm 45mm, clip, width=\textwidth]{../R/boatshape-durham0913} % width=8, height=6
+\uncover<1>{\node {\includegraphics[trim = 70mm 52.5mm 70mm 65mm, clip, width=\textwidth]{figs/boatshape-defense-1}};} % width=6, height=4.5
+\uncover<2>{\node {\includegraphics[trim = 70mm 52.5mm 70mm 65mm, clip, width=\textwidth]{figs/boatshape-defense-2}};} % width=6, height=4.5
+\end{tikzpicture}
+%
+%\end{center}%}
+\end{frame}
 
 \begin{frame}{Robust Bayesian Analysis: Other Models}
 \begin{itemize}
@@ -1166,24 +1301,24 @@ $\{ P : P = (1-\varepsilon) P_0 + \varepsilon Q, Q \in \mathcal{Q} \}$\\
 \end{itemize}
 \end{frame}
 
-
-
-
-
-\begin{frame}{***Summary}
+\begin{frame}{Summary}
   \begin{itemize}%[<+->]
 %  \item *** parametric distributions often chosen for tractability / convenience (Normal vs Cauchy!)
   \item choice of prior can severely affect inferences \\
     even if your prior is `non-informative'
-  \item solution: systematic sensitivity analysis over prior parameters
+  \item solution: go imprecise %systematic sensitivity analysis over prior parameters
   \item models from canonical exponential family make this easy to do
-    %\cite{2005:quaeghe::expon} ,2012:benavolizaffalon,2015:benavolizaffalon}
-  \item close relations to robust Bayes literature, e.g.\ %\cite{1994:berger,2000:rios,2005:ruggeri}
+    %{\footnotesize \parencite{2005:quaeghebeurcooman,2012:benavolizaffalon,2015:benavolizaffalon}}
+    {\footnotesize (\cite{2005:quaeghebeurcooman}; Benavoli and Zaffalon \cite*{2012:benavolizaffalon,2015:benavolizaffalon})}
+  \item allows to adequately express the quality of prior information
+%  \item a.k.a.\ parametric p-box 
+  \item close relations to robust Bayes literature\\
+    {\footnotesize \parencite{1994:berger,2000:rios}} %,2005:ruggeri}}
   \item concerns uncertainty in the prior\\
-    (uncertainty in data generating process: imprecise sampling models)
+    {\footnotesize (uncertainty in data generating process: imprecise sampling models)}
 %  \item here: focus on imprecise Dirichlet model
   \item if your prior is informative then prior-data conflict can be an issue
-%    \cite{2009:walter,2013:diss-gw}\\
+    {\footnotesize \parencite{2009:WalterAugustin,2013:diss-gw}}
 %    (we'll come back to this in the system reliability talk)
   \end{itemize}
 \end{frame}
