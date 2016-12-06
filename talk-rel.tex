@@ -657,7 +657,7 @@ reflects uncertainties from limited data, vague expert information, and prior-da
 \end{frame}
 
 
-\title{Dynamic and Adaptive Maintenance Policies\\ for Complex Systems\\ based on Real-Time Data}
+\title{Condition-Based Maintenance Policies\\ for Complex Systems\\ using Component Status Montoring}
 
 \author{Gero Walter, Simme Douwe Flapper}
 \institute{Eindhoven University of Technology, Eindhoven, NL\\ 
@@ -767,7 +767,8 @@ reflects uncertainties from limited data, vague expert information, and prior-da
 \node (sysABrelhist) at ( 0   ,-3) {\includegraphics[width=     \textwidth]{figs/sysABghist1}};}
 \uncover<3>{%
 \node (sysABtau)     at (-0.59,-5) {\includegraphics[width=0.838\textwidth]{figs/sysABtau1}};
-\draw[dotted, very thick] (-3.75,-3.75) -- (-3.75,-5.45);}
+%\draw[dotted, very thick] (-3.75,-3.75) -- (-3.75,-5.45);}
+\draw[dotted, very thick] (-3.275,-3.35) -- (-3.275,-5.45);}
 \uncover<4>{%
 \node (sysABrelhist) at (-0.79, 0) {\includegraphics[width=0.865\textwidth]{figs/sysABrelhist2}};
 \node (sysABrelhist) at ( 0   ,-3) {\includegraphics[width=     \textwidth]{figs/sysABghist2}};
@@ -794,7 +795,7 @@ reflects uncertainties from limited data, vague expert information, and prior-da
 \uncover<3->{%
 \node[rotate=90] at (-6.1,-4.8) {\parbox{7ex}{\centering\scriptsize time to\\ maintenance}};}
 \uncover<9>{%
-\draw[<->, very thick] (-4.83,-6.2) -- (-4.0,-6.2) node[right] {***time to next evaluation};
+\draw[<->, very thick] (-4.83,-6.2) -- (-4.0,-6.2) node[right] {time to next evaluation};
 \draw[dashed, thick] (-4.0,-6.1) -- (-4.0,-4);}
 \end{tikzpicture}
 \end{frame}
@@ -818,34 +819,110 @@ reflects uncertainties from limited data, vague expert information, and prior-da
 \Rsysnow(t) &= \sum_{l_1=0}^{c_1^{(\tnow)}} \cdots \sum_{l_K=0}^{c_K^{(\tnow)}} \Phinow(l_1,\ldots,l_K)
                \prod_{k=1}^K P(C^k_t = l_k\mid\nkz,\ykz, \vectknow)
 \end{align*}}};
-\draw[decorate,decoration=brace,line width=0.8mm] (0.75,-3.1)  -- (-1.7,-3.1) node[cyanrand, below=0.5cm] {\parbox{0.51\textwidth}{\centering%
-survival signature\\
+\uncover<2->{%
+\draw[decorate,decoration=brace,line width=0.6mm] (0.75,-3.1)  -- (-1.7,-3.1) node[cyanrand, below=0.5cm] {\parbox{0.51\textwidth}{\centering%
+survival signature at time $\tnow$\\
 $= P(\text{system functions} \mid \{l_k \text{ \comp{k}'s function}\}^{1:K})$
-}};
-\draw[decorate,decoration=brace,line width=0.8mm] (5.7,-3.1)  -- (1.6,-3.1) node[cyanrand, midway, below=0.5cm] {\parbox{0.3\textwidth}{%
+}};}
+\uncover<3->{%
+\draw[decorate,decoration=brace,line width=0.6mm] (5.7,-3.1)  -- (1.6,-3.1) node[cyanrand, midway, below=0.5cm] {\parbox{0.3\textwidth}{%
 Probability that $l_k$ of the $\cknow$ \comp{k}'s function
-}};
+}};}
 \end{tikzpicture}
 \end{frame}
 
 \begin{frame}{\large Expected Operational Cyle Cost Rate}
+\hspace*{5ex}%
+\begin{minipage}{0.8\textwidth}
+\vspace*{3ex}%
 \begin{itemize}
 \item[$\tau$] decision variable (when to do maintenance?)
 \item[$\Tsysnow$] (random) time of system failure,\\ with density \structure{$\fsysnow(t)$} and reliability function \structure{$\Rsysnow(t)$}
 \item[$c_p$] cost of preventive maintenance action
 \item[$c_c$] cost of corrective maintenance action
 \end{itemize}
+\end{minipage}
 \begin{align*}
-& g(\tau \mid \Tsysnow = \tnow + t) =
+g(\tau \mid \Tsysnow = \tnow + t) =
 \begin{cases}
-\frac{c_p}{\tnow + \tau}  & \text{if } t \ge \tau \quad\text{ (cost rate if failure after $\tau$)}\\
-\frac{c_c}{\tnow + t   }  & \text{if } t <   \tau \quad\text{ (cost rate if failure before $\tau$)}
-\end{cases} \\
-& \gnow(\tau) = \E[g(\tau \mid \Tsysnow)] = \frac{c_p}{\tnow + \tau} \Rsysnow(\tnow + \tau) + c_c \int_0^\tau \frac{1}{\tnow + t} \fsysnow(\tnow + t) \dd t \\
-& \tausnow := \arg\min \gnow(\tau)
+c_c / (\tnow + t   )  & \text{if } t <   \tau \quad\text{(failure before $\tau$)} \\
+c_p / (\tnow + \tau)  & \text{if } t \ge \tau \quad\text{(failure after $\tau$)}
+\end{cases}
+\end{align*}
+\vspace*{-2ex}
+\begin{align*}
+\uncover<2->{%
+\gnow(\tau) &= \E\Big[g(\tau \mid \Tsysnow)\Big] \\
+            &= \frac{c_p}{\tnow + \tau} \Rsysnow(\tnow + \tau) + c_c \int_0^\tau \frac{1}{\tnow + t} \fsysnow(\tnow + t) \dd t \\ }
+\uncover<3->{%
+\tausnow    &= \arg\min \gnow(\tau)}
 \end{align*}
 \end{frame}
 
+\begin{frame}{Operational Cycle}
+%\begin{tikzpicture}
+%\node {
+% trim = l b r t
+\hspace*{5ex}%
+\includegraphics[trim=145 380 125 125,clip,width=0.8\textwidth]{operationalcyclefig}%};
+%\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{\large Input \& Output}
+\begin{tikzpicture}
+[typeA/.style={rectangle,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minimum size=4mm},
+ typeB/.style={rectangle,draw,fill=tueyellow!50,thick,inner sep=0pt,minimum size=4mm},
+ hv path/.style={thick, to path={-| (\tikztotarget)}},
+ vh path/.style={thick, to path={|- (\tikztotarget)}},
+ comparrow/.style={draw,-stealth,tuered,line width=1mm},
+ ellistyle/.style={draw,tuered,line width=0.5mm}]
+\node at (0,0) %
+{\parbox{\textwidth}{%
+\uncover<1->{%
+Inputs before start-up:}
+\begin{itemize}
+\item<1-> system reliability block diagram
+\item<2-> for each component type:
+ \begin{itemize}
+ \item Weibull shape parameter \& MTTF from expert
+ \item expert confidence (how sure about MTTF)
+ \item optional: test data
+ \end{itemize}
+\item<3-> cost parameters $c_p$ and $c_c$%, preparation time %\raisebox{0.5ex}{\tikz{\draw[<->, very thick] (0,0) -- (0.7,0);}}
+\end{itemize}
+\uncover<4->{%
+Input during run-time (monitoring):}
+\begin{itemize}
+\item<4-> which components still work and which not
+\end{itemize}
+\uncover<5->{%
+Output:}
+\begin{itemize}
+\item<5-> for any time during run-time:\\ cost-optimal moment to repair the system (dynamic \& adaptive)
+\end{itemize}}};
+\uncover<1->{%
+\begin{scope}[xshift=1cm,yshift=2.5cm,scale=0.5]
+\node[typeA] (A1) at ( 0, 1.2) {A};
+\node[typeA] (A2) at ( 0, 0  ) {A};
+%\uncover<2->{\node[cross] at (0,0) {};}
+\node[typeB] (B1) at ( 0,-1.2) {B};
+\coordinate (start) at (-1  ,0);
+\coordinate (end)   at ( 1  ,0);
+\coordinate (fork1) at (-0.7,0);
+\coordinate (fork2) at ( 0.7,0);
+\path (fork1) edge[vh path] (start)
+              edge[vh path] (A1)
+              edge[vh path] (A2)
+              edge[vh path] (B1);
+\path (fork2) edge[vh path] (end)
+              edge[vh path] (A1)
+              edge[vh path] (A2)
+              edge[vh path] (B1);
+\end{scope}}
+\uncover<2->{%
+\draw[decorate,decoration=brace,very thick] (2.9,1.6) -- (2.9,0.4) node[midway, right=0.25cm] {\includegraphics[width=1.5cm]{figs/compArel0}};}
+\end{tikzpicture}
+\end{frame}
 
 
 
