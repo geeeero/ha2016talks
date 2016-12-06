@@ -859,7 +859,7 @@ c_p / (\tnow + \tau)  & \text{if } t \ge \tau \quad\text{(failure after $\tau$)}
 \end{align*}
 \end{frame}
 
-\begin{frame}{Operational Cycle}
+\begin{frame}{Operational Cycle Flowchart}
 %\begin{tikzpicture}
 %\node {
 % trim = l b r t
@@ -868,7 +868,7 @@ c_p / (\tnow + \tau)  & \text{if } t \ge \tau \quad\text{(failure after $\tau$)}
 %\end{tikzpicture}
 \end{frame}
 
-\begin{frame}{\large Input \& Output}
+\begin{frame}{Input \& Output}
 \begin{tikzpicture}
 [typeA/.style={rectangle,draw,fill=tuepmsgreen!70,thick,inner sep=0pt,minimum size=4mm},
  typeB/.style={rectangle,draw,fill=tueyellow!50,thick,inner sep=0pt,minimum size=4mm},
@@ -924,7 +924,26 @@ Output:}
 \end{tikzpicture}
 \end{frame}
 
-
+\begin{frame}{Summary \& Outlook}
+\uncover<1->{%
+\textbf{Summary:}
+\begin{itemize}
+\item Condition-based maintenance policy for complex system\\ using only component status
+\item Weibull component models with known shape parameter\\ \& conjugate inverse Gamma prior for scale parameter\\
+(no MC or numerical integration for parameter update)
+\item minimizes expected cycle cost rate per unit time
+\end{itemize}}
+\uncover<2->{%
+\textbf{Outlook:}
+\begin{itemize}
+\item estimate / update also shape parameter (no conjugate prior!)
+\item interval-censored failure times, common-cause failures
+\item selective component replacement policy
+\item sets of inverse Gamma priors / nonparametric component model\\
+  \quad $\to$ leads to set of $\Rsysnow(t)$ and set of $\gnow(t)$\\
+  \quad $\to$ what is $\tausnow$ then? (needs IP decision criteria)
+\end{itemize}}
+\end{frame}
 
 %\nocite{2015:bayessurvsign}
 
