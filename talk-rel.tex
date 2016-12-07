@@ -450,6 +450,12 @@ by min/max over $\PZc$ %or $\PNc$
 
 \end{frame}
 
+\begin{frame}{Sets of Priors for $\ptk$ and $C^k_t$}
+
+\includegraphics[width=\textwidth]{figs/betaset-binomset1.pdf}
+
+\end{frame}
+
 \begin{frame}{Component Reliability with Sets of Priors}
 
 \begin{tikzpicture}
@@ -645,11 +651,13 @@ in the very few cases\\ where Theorem 2 \& Lemma 3 do not apply
 \item[\play] Set of system reliability functions %appropriately
 reflects uncertainties from limited data, vague expert information, and prior-data conflict
 \item[\play] Easy-to-use implementation in \textbf{R} package \texttt{ReliabilityTheory} \parencite{2016:aslett-RT}
+with the function
+\texttt{nonParBayesSystemInferencePriorSets()}
 \end{itemize}}
 \uncover<2->{%
 \textbf{Next steps:}
 \begin{itemize}
-\item[\play] Allow right-censored observations (RUL estimation)
+\item[\play] Allow right-censored observations (component monitoring)
 \item[\play] Allow dependence between components\\ (common-cause failure, \ldots) %or more explicit dependence
 \item[\play] Use for system design (where to put extra redundancy?)
 \item[\play] Use for maintenance planning
@@ -800,6 +808,42 @@ reflects uncertainties from limited data, vague expert information, and prior-da
 \end{tikzpicture}
 \end{frame}
 
+\begin{frame}{Operational Procedure}
+\begin{tikzpicture}
+[node distance=6mm,
+ font=\footnotesize,
+ box/.style={draw, rectangle, thick, rounded corners, minimum height=6mm, minimum width=24mm},
+ box2/.style={draw, rectangle, thick, minimum height=6mm, minimum width=28mm, rounded corners=2mm},
+ dec/.style={draw, shape=diamond, thick, minimum height=4mm, minimum width=4mm},
+ pfeil/.style={-latex', very thick}]
+\uncover<1>{%
+\node (startup) [box]                       {\parbox{20ex}{\centering system start-up\\ (all comp.\ new)}};
+\node (sysfail) [box, right=of startup]     {system failed?};
+\node (tauchck) [box, below=6mm of sysfail] {$\tausnow < \delta$?};
+\node (gotonxt) [box, below=6mm of tauchck] {\parbox{15ex}{\centering continue to\\ $\tnow = (m+1)\delta$}};
+\draw [thick, dashed, rounded corners=2mm] ($(gotonxt.south east) + (2mm,-1mm)$) rectangle ($(sysfail.north west) + (-5mm,1mm)$) node[above left=0mm and -33mm] {each $\tnow = m \delta, m \in \naturals_0$};
+\node [above left=0mm and -8mm of startup] {$t=0$};
+\node (correct) [box, right=10mm of sysfail, minimum width=18mm, font=\scriptsize] {\parbox{14ex}{\centering corrective\\ maintenance\\ (cost $c_c$)}};
+\node (prevent) [box, right=10mm of tauchck, minimum width=18mm, font=\scriptsize] {\parbox{14ex}{\centering preventive\\ maintenance\\ (cost $c_p$)}};
+\node (update) [box, below right=12mm and -8mm of prevent, minimum width=10mm] {\parbox{12ex}{\centering update parameters}};
+\draw[pfeil] (startup) -- (sysfail);
+\draw[pfeil] (sysfail) -- (tauchck) node[midway, right] {no};
+\draw[pfeil] (tauchck) -- (gotonxt) node[midway, right] {no};
+\draw[very thick] (gotonxt.west) -| ($(sysfail.west) + (-3mm,0mm)$);
+\draw[pfeil] (sysfail) -- (correct) node[near end, above] {yes};
+\draw[pfeil] (tauchck) -- (prevent) node[near end, above] {yes};
+\draw[pfeil] (correct) -| (update);
+\draw[pfeil] (prevent) -| (update);
+\draw[pfeil, dotted] (update) -| (startup) node[midway, below right] {start new cycle};
+}
+% trim = l b r t
+\uncover<2>{%
+%\hspace*{5ex}%
+\node at (4,-2) {%
+\includegraphics[trim=145 380 125 125,clip,width=0.8\textwidth]{operationalcyclefig}};}
+\end{tikzpicture}
+\end{frame}
+
 \begin{frame}{\large System Reliability using the Survival Signature}
 \begin{tikzpicture}
 [cyanbox/.style={rounded corners, text centered, fill=tuecyan!20, inner sep=5mm},
@@ -857,15 +901,6 @@ c_p / (\tnow + \tau)  & \text{if } t \ge \tau \quad\text{(failure after $\tau$)}
 \uncover<3->{%
 \tausnow    &= \arg\min \gnow(\tau)}
 \end{align*}
-\end{frame}
-
-\begin{frame}{Operational Cycle Flowchart}
-%\begin{tikzpicture}
-%\node {
-% trim = l b r t
-\hspace*{5ex}%
-\includegraphics[trim=145 380 125 125,clip,width=0.8\textwidth]{operationalcyclefig}%};
-%\end{tikzpicture}
 \end{frame}
 
 \begin{frame}{Input \& Output}
