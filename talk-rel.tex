@@ -487,7 +487,7 @@ by min/max over $\PZc$ %or $\PNc$
  pfeil/.style={-latex', line width=1mm, color=tuered, shorten <=1mm}]
 \uncover<1->{\node at (0,0) %
      {\parbox{\textwidth}{\begin{multline*}
-       \Rsys\Big( t \mid {\textstyle \bigcup_{k=1}^K} \big\{\nktzg,\yktzr,\vec{t}^k\big\} \Big) = P(\Tsys > t \mid \cdots )\\
+       \Rsys\Big( t \mid \big\{\nktzg,\yktzr,\vec{t}^k\big\}{}^{k=1:K} \Big) = P(\Tsys > t \mid \cdots )\\
        = \sum_{l_1=0}^{m_1} \cdots \sum_{l_K=0}^{m_K} \Phi(l_1,\ldots,l_K)
          \prod_{k=1}^K P(C^k_t = l_k\mid\nktzg,\yktzr,\vec{t}^k)\end{multline*}}};}
 \uncover<2->{\node[cyanrand] (survsign) at (-3.1,-3.6)%
@@ -552,8 +552,9 @@ by min/max over $\PZc$ %or $\PNc$
 \uncover<9>{\node[cyanrand] (postpred) at (3,-3.6)%
      {\parbox[c]{0.41\textwidth}{Posterior predictive probability that\\ in a new system, $l_k$ of the $m_k$ \comp{k}'s\\
                                 function at time $t$:\\[1ex] \hspace*{1ex}
-                                $\binom{m_k}{l_k} \int [P(T_k >   t \mid \ptk)]^{l_k}$ \\ \hspace*{5.6ex}
-                                                      $[P(T_k \le t \mid \ptk)]^{m_k-l_k}$ \\ \hspace*{6ex}
+%                                $\binom{m_k}{l_k} \int [P(T_k >   t \mid \ptk)]^{l_k}$ \\ \hspace*{5.6ex}
+%                                                      $[P(T_k \le t \mid \ptk)]^{m_k-l_k}$ \\ \hspace*{6ex}
+                                $\binom{m_k}{l_k} \int_0^1 \big[\ptk\big]^{l_k} \big[1-\ptk\big]^{m_k-l_k} \times$ \\ \hspace*{6ex}
 %                                $f(\ptk \mid \az_{k,t},\bz_{k,t},\vec{t}^k)\, d\ptk $\\[1ex] \hspace*{5ex}
 %                                $= \binom{m_k}{l_k} \frac{B(      \az_{k,t} + s^k_t,             \bz_{k,t} + n_k - s^k_t)}%
 %                                                         {B(l_k + \az_{k,t} + s^k_t, m_k - l_k + \bz_{k,t} + n_k - s^k_t)}$}};
@@ -567,8 +568,8 @@ by min/max over $\PZc$ %or $\PNc$
 
 \begin{frame}{System Reliability Bounds}
 
-\play\ Bounds for $\Rsys\Big(\,t\,\big|\, \bigcup\limits_{k=1}^K \Big\{\nktzg,\yktzr,\vec{t}^k\Big\}\Big)$
-over $\bigcup\limits_{k=1}^K \Big\{$\raisebox{-1.05ex}{$\PktZc$}$\Big\}$:
+\play\ Bounds for $\Rsys\Big(\,t\,\big|\, \Big\{\nktzg,\yktzr,\vec{t}^k\Big\}{}^{k=1:K} \Big)$
+over \raisebox{-1.05ex}{$\PktZc$}'s: %\bigcup\limits_{k=1}^K 
 \begin{itemize}[<+->]
 \item $\min \Rsys(\cdot)$ by $\yktzr = \yzjlr{{k,t}}$ for any $\nktzg$\\
 %(first-order stochastic dominance of posterior predictive along $\yktzr$)
